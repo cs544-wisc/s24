@@ -1,3 +1,5 @@
+# DRAFT!  Don't start yet.
+
 # P7 (6% of grade): Kafka, Weather Data
 
 ## Overview

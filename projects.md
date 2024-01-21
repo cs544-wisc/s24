@@ -5,9 +5,10 @@
 Students may work alone or optionally work in groups of two.
 
 **Partners**
-* a comment at top should specify the names of both partners by their @wisc.edu email
+* `README.md` should specify the names of both partners by their @wisc.edu email
 * there should only be one submission in one GitHub classroom repo for the team
 * the repo history should show at least one commit from each partner
+  *  we do not proactively check if both partners make at least one commit every time, but when GitHub Classroom makes mistake on team membership (which happens more frequently than you might think), this is the easiest way to prove your contribution to your team
 * it's NOT OK to submit code from your partner that you didn't help write or understand
 
 **Other Collaboration**

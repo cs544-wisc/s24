@@ -1,3 +1,5 @@
+# DRAFT!  Don't start yet.
+
 # P8 (6% of grade): BigQuery, Loans Data
 
 ## Overview
@@ -144,9 +146,9 @@ q.to_dataframe()
 
 It should show something like this:
 
-|     | num_rows |
-| ---:| -------: |
-| 0   |     3233 |
+|      | num_rows |
+| ---: | -------: |
+|    0 |     3233 |
 
 Now, let's answer some questions.
 

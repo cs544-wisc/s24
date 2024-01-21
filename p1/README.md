@@ -1,3 +1,5 @@
+# DRAFT!  Don't start yet.
+
 # P1 (6% of grade): Counting Loans with Dockerized Shell Script
 
 ## Overview
