@@ -21,16 +21,14 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
-* Sep 7: Link to walkthrough + GCP clarification
-* Sep 8: Fix directions to get correct Docker compose version
-* Sep 8: Clarify output format for line count
+* 
 
 ## Part 1: Virtual Machine Setup
 
 We'll use Google's Cloud (GCP) for our virtual machines.  They've
 generously given each 544 student $100 in credits, which should last
 the whole semester if you stick to the [budget
-plan](https://github.com/cs544-wisc/f23/blob/main/projects.md#compute-setup).
+plan](https://github.com/cs544-wisc/s24/blob/main/projects.md#compute-setup).
 
 You can obtain the credits here: https://canvas.wisc.edu/courses/374194/pages/google-credits.
 
@@ -64,8 +62,10 @@ Carefully follow the directions here to install Docker 24.0.5 and Compose 2.20.2
 Notes:
 * there are several different approaches described under "Installation methods".  Use the directions under "Install using the apt repository".  Make sure you don't keep going after you reach "Install from a package"
 * the first step under "Install Docker Engine" has two options: "Latest" or "Specific version".  Choose **"Specific version"**
-* here is the command to get the required versions: `
-sudo apt-get install docker-ce=5:24.0.5-1~ubuntu.22.04~jammy docker-ce-cli=5:24.0.5-1~ubuntu.22.04~jammy containerd.io docker-buildx-plugin docker-compose-plugin=2.20.2-1~ubuntu.22.04~jammy`
+* here are the versions we will be using:
+  * docker-ce: `5:24.0.5-1~ubuntu.22.04~jammy`
+  * docker-ce-cle: `5:24.0.5-1~ubuntu.22.04~jammy`
+  * docker-compose-plugin: `2.20.2-1~ubuntu.22.04~jammy`
 
 To avoid needing to run every Docker command with root, there are a
 few more steps you can do here:
