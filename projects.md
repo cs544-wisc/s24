@@ -38,6 +38,7 @@ sharing $100 of credit per student.  Some notes about how to manage this credit:
 Here is a plan/budget for what VM you should have at each point during the semester:
 
 https://docs.google.com/spreadsheets/d/1OHvbCNrUMh8Lsplppds5QeyV-kKSaZ2hyB_691N072k/edit?usp=sharing
+**Project schedule to be updated!**
 
 Please monitor your credits carefully.  If you're burning through credits faster than the schedule, it is your responsibility to conserve credits (for example, by shutting down your VM overnight).
 
@@ -70,11 +71,10 @@ announcements providing project invite links.
 The general rule is no submissions >3 days late.  Each day late suffers a 10% penalty (so a 90% submission that is 2 days late gets 70%).
 
 Common exceptions, and who to ask:
-- Illness: you can **ask your TA** to override the late penalty, but they cannot give more than 3 days.  To qualify, you share a link to your repo; your commit history should show you made a substantial start on the project at least 3 days prior to the deadline
-- Busyness: same policy as illness (you might be unusually busy due to travel, extracurriculars, other courses, etc).  This shouldn't happen more than a couple times a semester
+- Illness: you can **ask the head TA** to override the late penalty, but they cannot give more than 3 days.  To qualify, you share a link to your repo; your commit history should show you made a substantial start on the project at least 3 days prior to the deadline
 - McBurney accomodations: **email your instructor** a proposed policy for the semester (we can discuss again if your situation changes during the semester)
 
-If you're working with a project partner who has the late penalty waived by a TA, that means it is waived for you as well, even if you don't have special circumstances yourself.
+If you're working with a project partner who has the late penalty waived by the head TA, that means it is waived for you as well, even if you don't have special circumstances yourself.
 
 For other cases (falling very far behind, family emergencies, etc), **reach out to your instructor** to discuss possible accomodations.
 
