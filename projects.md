@@ -73,7 +73,7 @@ Common exceptions, and who to ask:
 - Illness: you can **ask the head TA** to override the late penalty, but they cannot give more than 3 days.  To qualify, you share a link to your repo; your commit history should show you made a substantial start on the project at least 3 days prior to the deadline
 - McBurney accomodations: **email your instructor** a proposed policy for the semester (we can discuss again if your situation changes during the semester)
 
-If you're working with a project partner who has the late penalty waived by a TA, that means it is waived for you as well, even if you don't have special circumstances yourself.
+If you're working with a project partner who has the late penalty waived by the head TA, that means it is waived for you as well, even if you don't have special circumstances yourself.
 
 For other cases (falling very far behind, family emergencies, etc), **reach out to your instructor** to discuss possible accomodations.
 
