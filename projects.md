@@ -38,7 +38,6 @@ sharing $100 of credit per student.  Some notes about how to manage this credit:
 Here is a plan/budget for what VM you should have at each point during the semester:
 
 https://docs.google.com/spreadsheets/d/1OHvbCNrUMh8Lsplppds5QeyV-kKSaZ2hyB_691N072k/edit?usp=sharing
-**Project schedule to be updated!**
 
 Please monitor your credits carefully.  If you're burning through credits faster than the schedule, it is your responsibility to conserve credits (for example, by shutting down your VM overnight).
 
