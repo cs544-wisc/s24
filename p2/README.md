@@ -19,8 +19,7 @@ Learning objectives:
 
 Note that if you normally use VS Code with Jupyter, your setup for
 this project will be tricky because you can't SSH into a container.
-There are some notes here
-(https://github.com/cs544-wisc/f23/tree/main/docs/vs-code-jupyter)
+There are some notes [here](../docs/vs-code-jupyter)
 about how to connect -- ignore if you're using Jupyter through your
 browser.
 
@@ -28,9 +27,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
-* Sep 21: updated note about data source
-* Sep 21: add note about VS code
-* Sep 25: note that for Jupyter cell answers, you need to put the Python expression computing the answer on the list line of the cell (prints are for your own debugging info and do not count as cell output)
+* 
 
 ## Part 1: Setup
 
@@ -187,6 +184,7 @@ For the autograder to work, for each question, please include a line of comment 
 #q7
 ...
 ```
+Additionally, the autograder checks if your results are reproducible by requiring the cell execution numbers to be continuous. You will have to rerun all cells before running the autograder. 
 
 Of course, the checker only looks at the answers, not how you got
 them, so there may be further deductions (especially in the case of
