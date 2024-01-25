@@ -19,7 +19,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
-* 
+* Add instructions on how to find / create SSH key pairs. 
 
 ## Part 1: Virtual Machine Setup
 
@@ -44,6 +44,7 @@ nearby), but here are some highlights:
 * Update your boot disk settings to  use the Ubuntu 22.04 LTS public image -- select the x86/64 version (**not Arm64**) — with a boot disk size of 25 GB. Once you select these settings, the monthly estimate should be about $14.73 for the VM (if it’s not, you probably selected something wrong, and might run out of free credits before the end of the semester).
 * you may have modified firewall settings for other courses, but that's not necessary for 544
 * you'll need to setup an SSH key so you can connect from your laptop: https://console.cloud.google.com/compute/metadata?tab=sshkeys (the browser-based SSH client won't work for what we need to do in this class)
+  * Check [here](../docs/generate-ssh-key/) on how to find / create your SSH keys. 
 
 When you're done, check that you have the correct Operating System and
 CPU with `cat /etc/os-release` and `lscpu`.  Save the outputs to hand in too:
