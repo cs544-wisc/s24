@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import json
-import argparse
 import os
 import traceback
 import shutil
@@ -9,21 +8,21 @@ import multiprocessing
 
 multiprocessing.set_start_method("fork")
 
+ARGS = None
+
+DEBUG = False
 VERBOSE = False
 
 TMP_DIR = "/tmp/_cs544_tester_directory"
 TEST_DIR = None
+DEBUG_DIR = "_autograder_results"
 
 # full list of tests
 INIT = None
 TESTS = OrderedDict()
 CLEANUP = None
-DEBUG = None
-GO_FOR_DEBUG = None
 
 # dataclass for storing test object info
-
-
 class _unit_test:
     def __init__(self, func, points, timeout, desc):
         self.func = func
@@ -63,21 +62,21 @@ def test(points, timeout=None, desc=""):
     return wrapper
 
 # debug dir decorator
-
-
 def debug(debug_func):
     global DEBUG
     DEBUG = debug_func
     return debug_func
 
 # cleanup decorator
-
-
 def cleanup(cleanup_func):
     global CLEANUP
     CLEANUP = cleanup_func
     return cleanup_func
 
+
+# get arguments
+def get_args():
+    return ARGS
 
 # lists all tests
 def list_tests():
@@ -120,9 +119,13 @@ def run_tests():
         print("===== Final Score =====")
         print(json.dumps(results, indent=4))
         print("=======================")
-    # and results['score'] != results["full_score"]
-    if DEBUG and GO_FOR_DEBUG:
-        DEBUG()
+
+    if DEBUG:
+        debug_abs_path = f"{TEST_DIR}/{DEBUG_DIR}"
+        shutil.rmtree(debug_abs_path, ignore_errors=True)
+        shutil.copytree(src=TMP_DIR, dst=debug_abs_path, dirs_exist_ok=True)
+        print(f"Run results are stored to {debug_abs_path}")
+
     # cleanup code after all tests run
     shutil.rmtree(TMP_DIR, ignore_errors=True)
     return results
@@ -136,10 +139,9 @@ def save_results(results):
         json.dump(results, f, indent=2)
 
 
-def tester_main():
-    global VERBOSE, TEST_DIR, GO_FOR_DEBUG
+def tester_main(parser):
+    global ARGS, VERBOSE, TEST_DIR, DEBUG
 
-    parser = argparse.ArgumentParser()
     parser.add_argument(
         "-d", "--dir", type=str, default=".", help="path to your repository"
     )
@@ -148,16 +150,16 @@ def tester_main():
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-g", "--debug", action="store_true",
                         help="create a debug directory with the files used while testing")
-    parser.add_argument("-e", "--existing", default=None,
-                        help="run the autograder on an existing notebook")
     args = parser.parse_args()
+
+    ARGS = args
 
     if args.list:
         list_tests()
         return
 
     VERBOSE = args.verbose
-    GO_FOR_DEBUG = args.debug
+    DEBUG = args.debug
     test_dir = args.dir
     if not os.path.isdir(test_dir):
         print("invalid path")
@@ -166,23 +168,19 @@ def tester_main():
 
     # make a copy of the code
     def ignore(_dir_name, _dir_content): return [
-        ".git", ".github", "__pycache__", ".gitignore", "*.pyc"]
+        ".git", ".github", "__pycache__", ".gitignore", "*.pyc", DEBUG_DIR]
     shutil.copytree(src=TEST_DIR, dst=TMP_DIR,
                     dirs_exist_ok=True, ignore=ignore)
-
-    if args.existing is None and CLEANUP:
-        CLEANUP()
-
     os.chdir(TMP_DIR)
 
     # run init
     if INIT:
-        INIT(existing_file=args.existing)
+        INIT()
 
     # run tests
     results = run_tests()
     save_results(results)
 
     # run cleanup
-    if args.existing is None and CLEANUP:
+    if CLEANUP:
         CLEANUP()

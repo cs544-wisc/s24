@@ -1,4 +1,38 @@
-import math
+import math, json, re
+
+def collect_answers(nb_path: str) -> dict[any, any]:
+    answers = {}
+    with open(nb_path) as f:
+        nb = json.load(f)
+        cells = nb["cells"]
+        expected_exec_count = 1
+
+        for cell in cells:
+            if "execution_count" in cell and cell["execution_count"]:
+                exec_count = cell["execution_count"]
+                if exec_count != expected_exec_count:
+                    raise Exception(f"Expected execution count {expected_exec_count} but found {exec_count}. Please do Restart & Run all then save before running the tester.")
+                expected_exec_count = exec_count + 1
+
+            if cell["cell_type"] != "code":
+                continue
+            if not cell["source"]:
+                continue
+            m = re.match(r"#[qQ](\d+)", cell["source"][0].strip())
+            if not m:
+                continue
+            
+            # found a answer cell, add its output to list
+            qnum = int(m.group(1))
+            if qnum in answers:
+                raise Exception(f"Answer {qnum} repeated!")
+            expected = 1 + (max(answers.keys()) if answers else 0)
+            if qnum != expected:
+                print(f"Warning: Expected question {expected} next but found {qnum}!")
+            answers[qnum] = cell["outputs"]
+
+    return answers
+
 
 def parse_str_output(outputs):
     outputs = [o for o in outputs if o.get("output_type") == "execute_result"]
