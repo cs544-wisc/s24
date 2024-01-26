@@ -10,19 +10,17 @@ multiprocessing.set_start_method("fork")
 
 ARGS = None
 
+DEBUG = False
 VERBOSE = False
 
 TMP_DIR = "/tmp/_cs544_tester_directory"
 TEST_DIR = None
+DEBUG_DIR = "_autograder_results"
 
 # full list of tests
 INIT = None
 TESTS = OrderedDict()
 CLEANUP = None
-
-# debugging
-DEBUG = None
-GO_FOR_DEBUG = None
 
 # dataclass for storing test object info
 class _unit_test:
@@ -121,9 +119,13 @@ def run_tests():
         print("===== Final Score =====")
         print(json.dumps(results, indent=4))
         print("=======================")
-    # and results['score'] != results["full_score"]
-    if DEBUG and GO_FOR_DEBUG:
-        DEBUG()
+
+    if DEBUG:
+        debug_abs_path = f"{TEST_DIR}/{DEBUG_DIR}"
+        shutil.rmtree(debug_abs_path, ignore_errors=True)
+        shutil.copytree(src=TMP_DIR, dst=debug_abs_path, dirs_exist_ok=True)
+        print(f"Run results are stored to {debug_abs_path}")
+
     # cleanup code after all tests run
     shutil.rmtree(TMP_DIR, ignore_errors=True)
     return results
@@ -138,7 +140,7 @@ def save_results(results):
 
 
 def tester_main(parser):
-    global ARGS, VERBOSE, TEST_DIR, GO_FOR_DEBUG
+    global ARGS, VERBOSE, TEST_DIR, DEBUG
 
     parser.add_argument(
         "-d", "--dir", type=str, default=".", help="path to your repository"
@@ -157,7 +159,7 @@ def tester_main(parser):
         return
 
     VERBOSE = args.verbose
-    GO_FOR_DEBUG = args.debug
+    DEBUG = args.debug
     test_dir = args.dir
     if not os.path.isdir(test_dir):
         print("invalid path")
@@ -166,7 +168,7 @@ def tester_main(parser):
 
     # make a copy of the code
     def ignore(_dir_name, _dir_content): return [
-        ".git", ".github", "__pycache__", ".gitignore", "*.pyc"]
+        ".git", ".github", "__pycache__", ".gitignore", "*.pyc", DEBUG_DIR]
     shutil.copytree(src=TEST_DIR, dst=TMP_DIR,
                     dirs_exist_ok=True, ignore=ignore)
     os.chdir(TMP_DIR)

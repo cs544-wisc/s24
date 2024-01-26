@@ -1,55 +1,14 @@
-import json, re
+import json, re, argparse
 
 from tester import init, test, tester_main
 import nbutils
 
 ANSWERS = {}
 
-def parse_question_config(c):
-    if c.startswith("run="):
-        return {"run": c[4:]}
-    config = {}
-    opts = c.split(",")
-    for opt in opts:
-        parts = opt.split("=")
-        if len(parts) != 2:
-            continue
-        config[parts[0]] = parts[1].strip()
-    return config
-
-
 @init
 def collect_cells():
-    with open("nb/p2.ipynb") as f:
-        nb = json.load(f)
-        cells = nb["cells"]
-        expected_exec_count = 1
-
-        for cell in cells:
-            if "execution_count" in cell and cell["execution_count"]:
-                exec_count = cell["execution_count"]
-                if exec_count != expected_exec_count:
-                    raise Exception(f"Expected execution count {expected_exec_count} but found {exec_count}. Please do Restart & Run all then save before running the tester.")
-                expected_exec_count = exec_count + 1
-
-            if cell["cell_type"] != "code":
-                continue
-            if not cell["source"]:
-                continue
-            m = re.match(r"#[qQ](\d+)(.*)", cell["source"][0].strip())
-            if not m:
-                continue
-            
-            # found a answer cell, add its output to list
-            qnum = int(m.group(1))
-            notes = m.group(2).strip()
-            if qnum in ANSWERS:
-                raise Exception(f"Answer {qnum} repeated!")
-            expected = 1 + (max(ANSWERS.keys()) if ANSWERS else 0)
-            if qnum != expected:
-                print(f"Warning: Expected question {expected} next but found {qnum}!")
-
-            ANSWERS[qnum] = cell["outputs"]
+    global ANSWERS
+    ANSWERS = nbutils.collect_answers("nb/p2.ipynb")
 
 @test(points=10)
 def q1():
@@ -142,4 +101,5 @@ def q10():
         return "Wrong answer"
 
 if __name__ == '__main__':
-    tester_main()
+    parser = argparse.ArgumentParser()
+    tester_main(parser)

@@ -71,4 +71,4 @@ def run_test():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    tester_main()
+    tester_main(parser)
