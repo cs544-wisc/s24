@@ -1,10 +1,10 @@
 from subprocess import check_output
-import os
+import os, argparse
 
 from tester import init, test, cleanup, tester_main
 
 @init
-def init(*args, **kwargs):
+def init():
     os.system("docker rmi -f p1")
     os.system("docker container rm p1_tester")
     
@@ -70,4 +70,5 @@ def run_test():
     return "did not find 2493 in output of Docker container"
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
     tester_main()
