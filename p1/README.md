@@ -63,7 +63,7 @@ Notes:
 * the first step under "Install Docker Engine" has two options: "Latest" or "Specific version".  Choose **"Specific version"**
 * here are the versions we will be using and the command to install them:
   * docker-ce: `5:24.0.5-1~ubuntu.22.04~jammy`
-  * docker-ce-cle: `5:24.0.5-1~ubuntu.22.04~jammy`
+  * docker-ce-cli: `5:24.0.5-1~ubuntu.22.04~jammy`
   * docker-compose-plugin: `2.20.2-1~ubuntu.22.04~jammy`
   
   ```
