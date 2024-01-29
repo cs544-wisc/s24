@@ -61,10 +61,14 @@ Carefully follow the directions here to install Docker 24.0.5 and Compose 2.20.2
 Notes:
 * there are several different approaches described under "Installation methods".  Use the directions under "Install using the apt repository".  Make sure you don't keep going after you reach "Install from a package"
 * the first step under "Install Docker Engine" has two options: "Latest" or "Specific version".  Choose **"Specific version"**
-* here are the versions we will be using:
+* here are the versions we will be using and the command to install them:
   * docker-ce: `5:24.0.5-1~ubuntu.22.04~jammy`
   * docker-ce-cle: `5:24.0.5-1~ubuntu.22.04~jammy`
   * docker-compose-plugin: `2.20.2-1~ubuntu.22.04~jammy`
+  
+  ```
+  sudo apt-get install docker-ce=5:24.0.5-1~ubuntu.22.04~jammy docker-ce-cli=5:24.0.5-1~ubuntu.22.04~jammy containerd.io docker-buildx-plugin docker-compose-plugin=2.20.2-1~ubuntu.22.04~jammy
+  ```
 
 To avoid needing to run every Docker command with root, there are a
 few more steps you can do here:
