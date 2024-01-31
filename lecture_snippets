@@ -1,4 +1,17 @@
-Lecture 2 (Jan 26)
+Lecture 4 (Jan 31):
+
+Installs
+apt-get update
+apt-get install unzip # python3 python3-pip
+pip install pandas==2.1.0 --break-system-packages
+
+Jupyter
+pip3 install jupyterlab==4.0.3 --break-system-packages
+python3 -m jupyterlab --no-browser --ip=0.0.0.0 --port=5440 --allow-root --NotebookApp.token=''
+docker run -p 127.0.0.1:5440:5440 IMAGE
+ssh USER@IP -L localhost:5440:localhost:5440
+
+Lecture 2 (Jan 26):
 
 https://pages.cs.wisc.edu/~harter/cs544/data/ghcnd-stations.txt 
 
