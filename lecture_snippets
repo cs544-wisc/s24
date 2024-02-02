@@ -1,3 +1,11 @@
+Lecture 5 (Feb 2):
+
+docker run -d -p 127.0.0.1:5440:5440 -v ./nb:/nb pytorch
+
+ssh USER@IP -L localhost:5440:localhost:5440
+
+________________________________________________________________________________
+
 Lecture 4 (Jan 31):
 
 Installs
@@ -10,6 +18,8 @@ pip3 install jupyterlab==4.0.3 --break-system-packages
 python3 -m jupyterlab --no-browser --ip=0.0.0.0 --port=5440 --allow-root --NotebookApp.token=''
 docker run -p 127.0.0.1:5440:5440 IMAGE
 ssh USER@IP -L localhost:5440:localhost:5440
+
+________________________________________________________________________________
 
 Lecture 2 (Jan 26):
 
