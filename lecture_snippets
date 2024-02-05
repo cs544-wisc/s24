@@ -1,5 +1,6 @@
-Lecture 5 (Feb 2):
+Lecture 6 (Feb 5):
 
+docker build . -t pytorch
 docker run -d -p 127.0.0.1:5440:5440 -v ./nb:/nb pytorch
 
 ssh USER@IP -L localhost:5440:localhost:5440
