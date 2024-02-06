@@ -144,7 +144,7 @@ You'll be comparing `trainX @ coef` to `trainY`
 
 #### Optimization
 
-In part 1, you used a hardcoded `coef` vector to predict COVID deaths.
+In part 2, you used a hardcoded `coef` vector to predict COVID deaths.
 Now, you will start with zero coefficients and optimize them.
 
 Seed torch random number generation with **544**.
