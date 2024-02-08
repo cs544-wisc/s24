@@ -1,4 +1,5 @@
 # P2 (6% of grade): Predicting COVID Deaths with PyTorch
+GitHub Classroom Link: https://classroom.github.com/a/bvhgIyTE
 
 ## Overview
 
