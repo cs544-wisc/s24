@@ -1,19 +1,19 @@
-# DRAFT!  Don't start yet.
+# DRAFT! Don't start yet.
 
-# P3 (6% of grade): Model Server
+# P3 (6% of grade): MathDB
 
 ## Overview
 
-In the last project, you trained a simple PyTorch model using `SGD`. Now, you'll write a program that can load a model (similar to the one from P2) and use it to make predictions upon request (this kind of program is called a _model server_).
+In this project, you will write a database to handle simple math operations (addition, subtraction, multiplication, and division). This is similar to a _key-value store_, but comes with the added functionality of the the math operations.
 
-Your model server will use multiple threads and cache the predictions (to save effort when the server is given the same inputs repeatedly).
+Your database will use multiple threads and cache calculation results. This will save effort when the database is given the same inputs repeatedly.
 
-You'll start by writing your code in a Python class and calling the methods in it. By the end, though, your model server will run in a Docker container and receive requests over a network (via gRPC calls).
+You'll start by writing your code in a Python class and calling the methods in it. By the end, though, your database will run in a Docker container and receive requests over a network (via gRPC calls).
 
 Learning objectives:
 
 -   Use threads and locks correctly
--   Cache expensive compute results with an LRU policy
+-   Cache computation results with an LRU policy
 -   Measure performance statistics like cache hit rate
 -   Communicate between clients and servers via gRPC
 
@@ -21,56 +21,51 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
--   Sept 30: Match up `test_prediction_cache.py` and `test_modelserver.py` with specification
--   Sept 30: Update Testing section
--   Sept 30: Add additional `Predict` test case in `docker_autograde.py`
--   Sept 30: Add comments in `autograde.py`
--   Sept 30: Use -`Request` and -`Response` in `modelserver.proto`
--   Oct 02: Reword hit/miss rate to hit and miss rate (your hit rate is the number of hits divided by the total number of calls)
--   Oct 03: Added `--break-system-packages` to installation command
--   Oct 05: Increased time that autograder waits for server to bootup to 5 seconds
+-   N/A
 
-## Part 1: Prediction Cache
+## Setup
 
-### `PredictionCache` class
+Run `setup.sh` to get all of the relevant and up-to-date autograding files.
 
-Write a class called `PredictionCache` with two methods: `SetCoefs(coefs)` and `Predict(X)` in a file called `server.py`.
+## Part 1: Math Cache
 
-`SetCoefs` will store `coefs` in the PredictionCache object; `coefs` will be a PyTorch tensor containing a vertical vector of `float32`s.
+In `server.py`, write a class called `MathCache` with a few methods: `set(key, value)` and `get(key)`.
 
-`Predict` will take a 2D tensor and use it to predict `y` values (which it will return) using the previously set `coefs`, like this:
+These methods will access an instance variable that is a dictionary from key to value. For now, assume that `key` is present in the dictionary during a `Get` call (we will handle errors later).
 
-```
-y = X @ coefs
-```
+Next, add the following methods:
 
-In Python, a return statement can have multiple values; in this case it should have two:
+-   `add(key_a, key_b)`
+-   `sub(key_a, key_b)`
+-   `mult(key_a, key_b)`
+-   `div(key_a, key_b)` (again, don't worry about errors here for now, e.g. divide by 0)
 
-1. the predict y values
-2. a `bool`, indicating whether PredictionCache could make the prediction using a cache (see below)
+These methods will use `get` for both keys and perform the math operation. Lastly, they will return the result and whether the cache was hit (a boolean). You will implement this last bit in the next section
+
+At this point, try running `autograde.py`. The test `math_cache_ops` should pass.
+
+If `key` is not present for any of the methods, simply raise a `KeyError`. (hint: this is already what is raised by `my_dict[key]`)
 
 ### Caching
 
-Add code for an LRU cache to your `PredictionCache` class. Requirements:
+Now you will add code for an LRU cache to your `MathCache` class. Requirements:
 
--   `Predict` should round the X values to 4 decimal places before using them for anything (https://pytorch.org/docs/stable/generated/torch.round.html); the idea is to be able to use cached results for inputs that are approximately the same
--   The cache should hold a maximum of 10 entries
--   Whenever `SetCoefs` is called, _invalidate_ the cache (meaning clear out all the entries in the cache) because we won't expect the same predictions for the same inputs now that the model itself has changes
--   The second value returned by `Predict` should indicate whether there was a hit
--   When adding an `X` value to a caching dictionary or looking it up, first convert X to a tuple, like this: `tuple(X.flatten().tolist())`. The reason is that PyTorch tensors don't work as you would expect as keys in a Python `dict` (but tuples do work)
+-   Use the operation name and key names as the key to the cache. E.g., `("add", "key_a", "key_b")`.
+-   The cache should hold a maximum of 10 entries.
+-   Whenever `Set` is called, _invalidate_ the cache (clear out all the entries in the cache). We don't expect the same results now that the key values have changed.
 
-Use `test_prediction_cache.py` and verify that it produces the expected output indicated by the comments.
+At this point, try running `autograde.py`. The test `math_cache_lru_simple` and `math_cache_lru_complex` should pass.
 
 ### Locking
 
-There will eventually be multiple threads calling methods in `PredictionCache` simultaneously, so add a lock.
+There will eventually be multiple threads calling methods in `MathCache` simultaneously, so you will now add a lock (again as an instance variable).
 
-The lock should:
+The lock should be:
 
--   be held when any shared data (for example, attributes in the class) are modified
--   get released at the end of each call, even if there is an exception
+-   Held when any shared data (e.g., the cache or key-value dictionary) are modified.
+-   Released at the end of each call, [even if there is an exception](https://docs.python.org/3/tutorial/errors.html#defining-clean-up-actions).
 
-## Part 2: Model Server
+## Part 2: MathDB
 
 ### Protocol
 
@@ -82,89 +77,102 @@ Read this guide for gRPC with Python:
 Install the tools (be sure to upgrade pip first, as described in the directions):
 
 ```shell
-pip3 install grpcio==1.58.0 grpcio-tools==1.58.0 --break-system-packages
+pip3 install grpcio==1.60.1 grpcio-tools==1.60.1 --break-system-packages
 ```
 
-Create a file called `modelserver.proto` containing a service called `ModelServer`.
-Specify `syntax="proto3";` at the top of your file.
-`ModelServer` will contain 2 RPCs:
+Feel free to setup a virtualenv or similar if you comfortable. Otherwise, the above is also acceptable.
 
-1. `SetCoefs`
-    - `Request`: `coefs` (`repeated float`)
+Create a file called `mathdb.proto` containing a service called `MathDbService`.
+Specify `syntax="proto3";` at the top of your file.
+`MathDbService` will contain 6 RPCs. Also define the request/response message types.
+
+1. `Set`
+    - `Request`: `key` (`string`), and `value` (`float`)
     - `Response`: `error` (`string`)
-2. `Predict`
-    - `Request`: `X` (`repeated float`)
-    - `Response`: `y` (`float`), `hit` (`bool`), and `error` (`string`)
+2. `Get`
+    - `Request`: `key` (`string`)
+    - `Response`: `value` (`float`) and `error` (`string`)
+3. `Add`/`Sub`/`Mult`/`Div`
+    - `Request`: `key_a` (`string`) and `key_b` (`string`)
+    - `Response`: `value` (`string`), `cache_hit` (`bool`), and `error` (`string`)
 
 You can build your `.proto` with:
 
 ```shell
-python3 -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. modelserver.proto
+python3 -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. mathdb.proto
 ```
 
-Verify `modelserver_pb2_grpc.py` was generated.
+Verify `mathdb_pb2.py` and `mathdb_pb2_grpc.py` were generated.
+
+At this point, try running `autograde.py`. The test `math_db_grpc` should pass.
 
 ### Server
 
-Add a `ModelServer` class to `server.py` that inherits from `modelserver_pb2_grpc.ModelServerServicer`.
+Add a `MathDb` class to `server.py` that inherits from `mathdb_pb2_grpc.MathDbServicer`. This base class has the function signatures of all the methods you will need to implement. `MathDb` should override the two methods of `MathDbServicer` and use a `MathCache` to help calculate the answers.
 
-`ModelServer` should override the two methods of `ModelServerServicer` and use a `PredictionCache` to help calculate the answers.
-You'll need to manipulate the data to translate back and forth between the `repeated float` values from gRPC and the tensors in the shapes needed by `PredictionCache`.
-Although `PredictionCache.Predict` can work on multiple rows of `X` data at once, the `X` values received by `ModelServer` should be arranged as a single row.
+The `error` fields should contain the empty string `""` when no exceptions occur; however, you should wrap your code in a `try/except` so that in the event of an exception, you can return an error message that can help you debug. If you did not do this, exceptions happening on the server side would not show up anywhere, making troubleshooting difficult.
 
-The `error` fields should contain the empty string `""` when all is well, or an error message that can help you debug when there was an exception or other issue (otherwise exceptions happening on the server side won't show up anywhere, which makes troubleshooting difficult).
+Hint: you can use `traceback.format_exc` in your `except` block to get a string representation of the exception to return
 
 Start your server like this:
 
 ```python
 import grpc
 from concurrent import futures
-server = grpc.server(futures.ThreadPoolExecutor(max_workers=4), options=(('grpc.so_reuseport', 0),))
-modelserver_pb2_grpc.add_ModelServerServicer_to_server(ModelServer(), server)
-server.add_insecure_port("[::]:5440", )
-server.start()
-server.wait_for_termination()
+
+import mathdb_pb2_grpc
+
+if __name__ == "__main__":
+  server = grpc.server(futures.ThreadPoolExecutor(max_workers=4), options=(('grpc.so_reuseport', 0),))
+  mathdb_pb2_grpc.add_MathDbServicer_to_server(MathDb(), server)
+  server.add_insecure_port("[::]:5440", )
+  server.start()
+  server.wait_for_termination()
 ```
 
 You can do this directly in the bottom of your server.py, or within a `main` function; feel free to move imports to the top of your file if you like.
 
-Use `test_modelserver.py` after starting the server to verify that it produces the expected output indicated by the comments.
+At this point, try running `autograde.py`. The test `math_db_server_simple` and `math_db_server_errors` should pass. Additionally, after building the `Dockerfile` (mentioned later), `math_db_server_simple_over_grpc` and `math_db_server_errors should pass.
 
 ## Part 3: Client
 
 Write a gRPC client named `client.py` that can be run like this:
 
-```
-python3 client.py <PORT> <COEF> <THREAD1-WORK.csv> <THREAD2-WORK.csv> ...
+```bash
+python3 client.py <PORT> <THREAD1-WORK.csv> <THREAD2-WORK.csv> <THREAD3-WORK.csv> ...
 ```
 
-For example, say you run `python3 client.py 5440 "1.0,2.0,3.0" x1.csv x2.csv x3.csv`.
+You are welcome to read `sys.argv` or implement your own [`argparse.ArgumentParser`](https://docs.python.org/3/howto/argparse.html#argparse-tutorial) if you would like.
 
-For this example, your client should do the following, in order:
+_For this example_, your client should do the following, in order:
 
 1. Connect to the server at port `5440`.
-2. Call `SetCoef` with [1.0,2.0,3.0].
-3. Launch three threads, each responsible for one of the 3 CSV files.
-4. Each thread should loop over the rows in its CSV files. Each row will contain a list of floats that should be used to make a `Predict` call to the server. The threads should collect statistics about the numbers of hits and misses.
-5. The main thread should call `join` to wait until the 3 threads are finished.
+2. Launch three threads, each thread being responsible for one of the three CSV files.
+3. Each thread should loop over the rows in its CSV files. Each row will contain a command name and either one or two key names that should be used to make a call to the server. The threads should then collect some aggregate statistics about the total number of hits and misses. **Be sure do this in a thread safe way!** You can either aggregate the totals for each thread independently or access a global variable if it is protected by lock!
+4. The main thread should call `join` to wait until the 3 threads are finished.
 
-The client can print other stuff, but its very last line of output should be the overall hit rate. For example, if the hit and total counts for the three threads are 1/1, 0/1, and 3/8, then the overall hit rate would be (1+0+3) / (1+1+8) = 0.4.
+Note that your client should work for any number ($n \geq 1$) of CSV files.
+
+The client can print other stuff, but its very last line of output should be the overall hit rate. For example, if the hit counts and total counts for the three threads are 1/1, 0/1, and 3/8 respectively, then the overall hit rate would be (1+0+3) / (1+1+8) = 0.4.
+
+At this point, try running `autograde.py`. The tests `client_workload_{1,2,3,combined}` should pass.
 
 ## Part 4: Deployment
 
-You should write a `Dockerfile` to build an image with everything needed to run both your server and client. Your Docker image should:
+You should write a `Dockerfile` to build an image with everything needed (Python, packages, etc.) to run both your server and client. Your Docker image should:
 
 -   Build via `docker build -t p3 .`
--   Run via `docker run -p 127.0.0.1:54321:5440 p3` (i.e., you can map any external port to the internal port of 5440)
+-   Run via `docker run -p 127.0.0.1:5440:5440 p3` (i.e., you can map any external port to the internal port of 5440)
+-   Either `python3 client.py <PORT> <THREAD1-WORK.csv> <THREAD2-WORK.csv> <THREAD3-WORK.csv> ...` or `docker exec -it <CONTAINER-NAME> python3 client.py <PORT> <PORT> <THREAD1-WORK.csv> <THREAD2-WORK.csv> <THREAD3-WORK.csv>`
 
-You should then be able to run the client outside of the container (using port 54321), or use a `docker exec` to enter the container and run the client with port 5440.
+You should then be able to run the client outside of the container (using any port you would like), or use a `docker exec` to enter the container and run the client with port 5440.
 
 ## Submission
 
-You should organize and commit your files such that we can run the code in your repo like this:
+You should organize and commit your files such that we can run the code in your repo like this
 
 ```shell
-python3 -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. modelserver.proto
+python3 -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. mathdb.proto
 python3 autograde.py
 ```
 
@@ -172,34 +180,27 @@ python3 autograde.py
 
 Run `python autograde.py` to get your score, which contains the following tests:
 
-1. `docker_build_run` (10)
+1. `math_cache_ops` (10)
+2. `math_cache_lru_simple` (10)
+3. `math_cache_lru_complex` (10)
+4. `math_db_grpc` (10)
+5. `math_db_server_simple` (10)
+6. `math_db_server_errors` (10)
+7. `docker_build_run` (10)
     - docker image builds and can start running
-2. `run_docker_autograde` (0)
-    - It starts the docker autograder (within the docker container)
-3. `protobuf_interface` (10)
-    - interface matches spec
-4. `set_coefs` (10)
-    - is correct, no errors
-5. `predict` (10)
-    - get expected result
-6. `predict_single_call_cache` (10)
-    - repeated call will hit cache
-7. `predict_full_cache_eviction` (10)
-    - repeated call will not hit cache after cache fills up
-8. `set_coefs_cache_invalidation` (10)
-    - cache is invalidated after SetCoefs
-9. `client_workload_1` (10)
-    - no repeats/cache_hits
-10. `client_workload_2` (10)
-    - LRU check
-11. `client_workload_3` (10)
+8. `math_db_server_simple` (5)
+9. `math_db_server_errors` (5)
+10. `client_workload_1` (5)
+11. `client_workload_2` (5)
+12. `client_workload_3` (5)
+13. `client_workload_combined` (5)
     - handles multiple CSVs
 
 There will also be a manual grading portion, so the score you see in `test.json` may not reflect your final score.
 
 We will check the following:
 
--   Client uses threads
--   Server uses threads
--   Server locking is correct
--   Etc.
+1. `math_cache_locking` (15)
+    - Server uses threads and locking is correct
+2. `client_thread_safe` (15)
+    - Client uses threads and locking is correct
