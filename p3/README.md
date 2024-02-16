@@ -1,5 +1,3 @@
-# DRAFT! Don't start yet.
-
 # P3 (6% of grade): MathDB
 
 ## [GitHub Classroom Link](https://classroom.github.com/a/9Ttkhntt)
