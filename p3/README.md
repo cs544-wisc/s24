@@ -2,6 +2,8 @@
 
 # P3 (6% of grade): MathDB
 
+## [GitHub Classroom Link](https://classroom.github.com/a/9Ttkhntt)
+
 ## Overview
 
 In this project, you will write a database to handle simple math operations (addition, subtraction, multiplication, and division). This is similar to a _key-value store_, but comes with the added functionality of the the math operations.
