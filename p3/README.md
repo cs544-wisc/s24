@@ -29,18 +29,18 @@ Run `setup.sh` to get all of the relevant and up-to-date autograding files.
 
 ## Part 1: Math Cache
 
-In `server.py`, write a class called `MathCache` with a few methods: `set(key, value)` and `get(key)`.
+In `server.py`, write a class called `MathCache` with a few methods: `Set(key, value)` and `Get(key)`.
 
 These methods will access an instance variable that is a dictionary from key to value. For now, assume that `key` is present in the dictionary during a `Get` call (we will handle errors later).
 
 Next, add the following methods:
 
--   `add(key_a, key_b)`
--   `sub(key_a, key_b)`
--   `mult(key_a, key_b)`
--   `div(key_a, key_b)` (again, don't worry about errors here for now, e.g. divide by 0)
+-   `Add(key_a, key_b)`
+-   `Sub(key_a, key_b)`
+-   `Mult(key_a, key_b)`
+-   `Div(key_a, key_b)` (again, don't worry about errors here for now, e.g. divide by 0)
 
-These methods will use `get` for both keys and perform the math operation. Lastly, they will return the result and whether the cache was hit (a boolean). You will implement this last bit in the next section
+These methods will use `Get` for both keys and perform the math operation. Lastly, they will return the result and whether the cache was hit (a boolean). You will implement this last bit in the next section
 
 At this point, try running `autograde.py`. The test `math_cache_ops` should pass.
 
@@ -87,14 +87,14 @@ Specify `syntax="proto3";` at the top of your file.
 `MathDbService` will contain 6 RPCs. Also define the request/response message types.
 
 1. `Set`
-    - `Request`: `key` (`string`), and `value` (`float`)
-    - `Response`: `error` (`string`)
+    - `SetRequest`: `key` (`string`), and `value` (`float`)
+    - `SetResponse`: `error` (`string`)
 2. `Get`
-    - `Request`: `key` (`string`)
-    - `Response`: `value` (`float`) and `error` (`string`)
+    - `GetRequest`: `key` (`string`)
+    - `GetResponse`: `value` (`float`) and `error` (`string`)
 3. `Add`/`Sub`/`Mult`/`Div`
-    - `Request`: `key_a` (`string`) and `key_b` (`string`)
-    - `Response`: `value` (`string`), `cache_hit` (`bool`), and `error` (`string`)
+    - `BinaryOpRequest`: `key_a` (`string`) and `key_b` (`string`)
+    - `BinaryOpResponse`: `value` (`string`), `cache_hit` (`bool`), and `error` (`string`)
 
 You can build your `.proto` with:
 
@@ -169,12 +169,19 @@ You should then be able to run the client outside of the container (using any po
 
 ## Submission
 
-You should organize and commit your files such that we can run the code in your repo like this
+You should organize and commit your files such that we can run the code in your repo like this:
 
 ```shell
 python3 -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. mathdb.proto
 python3 autograde.py
 ```
+
+This should include:
+
+- `client.py`
+- `server.py`
+- `mathdb.proto`
+- `Dockerfile`
 
 ## Tester
 
@@ -188,8 +195,8 @@ Run `python autograde.py` to get your score, which contains the following tests:
 6. `math_db_server_errors` (10)
 7. `docker_build_run` (10)
     - docker image builds and can start running
-8. `math_db_server_simple` (5)
-9. `math_db_server_errors` (5)
+8. `math_db_server_simple_over_grpc` (5)
+9. `math_db_server_errors_over_grpc` (5)
 10. `client_workload_1` (5)
 11. `client_workload_2` (5)
 12. `client_workload_3` (5)
