@@ -94,7 +94,7 @@ Specify `syntax="proto3";` at the top of your file.
     - `GetResponse`: `value` (`float`) and `error` (`string`)
 3. `Add`/`Sub`/`Mult`/`Div`
     - `BinaryOpRequest`: `key_a` (`string`) and `key_b` (`string`)
-    - `BinaryOpResponse`: `value` (`string`), `cache_hit` (`bool`), and `error` (`string`)
+    - `BinaryOpResponse`: `value` (`float`), `cache_hit` (`bool`), and `error` (`string`)
 
 You can build your `.proto` with:
 
