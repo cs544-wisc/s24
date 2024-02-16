@@ -30,13 +30,13 @@ def with_client():
                 return "mathdb_pb2_grpc.py not found"
 
             # pylint: disable=import-outside-toplevel,import-error,no-name-in-module
-            from mathdb_pb2_grpc import MathDbStub
+            from mathdb_pb2_grpc import MathDbServiceStub
 
             # pylint: enable=import-outside-toplevel,import-error,no-name-in-module
 
             addr = f"127.0.0.1:{PORT}"
             channel = grpc.insecure_channel(addr)
-            stub = MathDbStub(channel)
+            stub = MathDbServiceStub(channel)
             return test_func(stub)
 
         return wrapper
