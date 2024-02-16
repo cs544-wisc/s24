@@ -108,7 +108,7 @@ At this point, try running `autograde.py`. The test `math_db_grpc` should pass.
 
 ### Server
 
-Add a `MathDb` class to `server.py` that inherits from `mathdb_pb2_grpc.MathDbServicer`. This base class has the function signatures of all the methods you will need to implement. `MathDb` should override the two methods of `MathDbServicer` and use a `MathCache` to help calculate the answers.
+Add a `MathDb` class to `server.py` that inherits from `mathdb_pb2_grpc.MathDbServiceServicer`. This base class has the function signatures of all the methods you will need to implement. `MathDb` should override the two methods of `MathDbServiceServicer` and use a `MathCache` to help calculate the answers.
 
 The `error` fields should contain the empty string `""` when no exceptions occur; however, you should wrap your code in a `try/except` so that in the event of an exception, you can return an error message that can help you debug. If you did not do this, exceptions happening on the server side would not show up anywhere, making troubleshooting difficult.
 
@@ -124,7 +124,7 @@ import mathdb_pb2_grpc
 
 if __name__ == "__main__":
   server = grpc.server(futures.ThreadPoolExecutor(max_workers=4), options=(('grpc.so_reuseport', 0),))
-  mathdb_pb2_grpc.add_MathDbServicer_to_server(MathDb(), server)
+  mathdb_pb2_grpc.add_MathDbServiceServicer_to_server(MathDb(), server)
   server.add_insecure_port("[::]:5440", )
   server.start()
   server.wait_for_termination()
