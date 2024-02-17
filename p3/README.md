@@ -21,7 +21,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
--   N/A
+-   2024-02-16: Protobuf typos in Readme fixed
 
 ## Setup
 
@@ -82,9 +82,9 @@ pip3 install grpcio==1.60.1 grpcio-tools==1.60.1 --break-system-packages
 
 Feel free to setup a virtualenv or similar if you comfortable. Otherwise, the above is also acceptable.
 
-Create a file called `mathdb.proto` containing a service called `MathDbService`.
+Create a file called `mathdb.proto` containing a service called `MathDb`.
 Specify `syntax="proto3";` at the top of your file.
-`MathDbService` will contain 6 RPCs. Also define the request/response message types.
+`MathDb` will contain 6 RPCs. Also define the request/response message types.
 
 1. `Set`
     - `SetRequest`: `key` (`string`), and `value` (`float`)
@@ -94,7 +94,7 @@ Specify `syntax="proto3";` at the top of your file.
     - `GetResponse`: `value` (`float`) and `error` (`string`)
 3. `Add`/`Sub`/`Mult`/`Div`
     - `BinaryOpRequest`: `key_a` (`string`) and `key_b` (`string`)
-    - `BinaryOpResponse`: `value` (`string`), `cache_hit` (`bool`), and `error` (`string`)
+    - `BinaryOpResponse`: `value` (`float`), `cache_hit` (`bool`), and `error` (`string`)
 
 You can build your `.proto` with:
 
