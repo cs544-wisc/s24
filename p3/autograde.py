@@ -8,9 +8,6 @@ from pathlib import Path
 from subprocess import DEVNULL, CalledProcessError, call, check_output
 from time import sleep
 
-import grpc
-from google.protobuf.descriptor import FieldDescriptor
-
 from tester import cleanup, init, test, tester_main
 
 PORT = 5440
@@ -26,6 +23,14 @@ def with_client():
     def decorator(test_func):
         @wraps(test_func)
         def wrapper():
+            try:
+                # pylint: disable=import-outside-toplevel,import-error
+                import grpc
+
+                # pylint: enable=import-outside-toplevel,import-error
+            except ImportError:
+                return "grpc not installed"
+
             if not (CWD / "mathdb_pb2_grpc.py").exists():
                 return "mathdb_pb2_grpc.py not found"
 
@@ -285,6 +290,14 @@ def math_cache_lru_complex():
 def math_db_grpc():
     """Tests the mathdb.proto file and the generated Python code"""
 
+    try:
+        # pylint: disable=import-outside-toplevel,import-error
+        from google.protobuf.descriptor import FieldDescriptor
+
+        # pylint: enable=import-outside-toplevel,import-error
+    except ImportError:
+        return "grpc not installed"
+
     if not (CWD / "mathdb.proto").exists():
         return "mathdb.proto not found"
 
@@ -487,6 +500,14 @@ def math_db_server_errors():
 @test(10, timeout=10)
 def docker_build_run():
     """Builds and runs the Docker container."""
+
+    try:
+        # pylint: disable=import-outside-toplevel,import-error
+        import grpc
+
+        # pylint: enable=import-outside-toplevel,import-error
+    except ImportError:
+        return "grpc not installed"
 
     if not (CWD / "Dockerfile").exists():
         return "Dockerfile not found"

@@ -21,7 +21,11 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
--   2024-02-16: Protobuf typos in README fixed, add clarification on cache
+-   2024-02-16:
+    -   Protobuf typos in README fixed
+    -   Add clarification on cache
+    -   Dynamically import grpc
+
 
 ## Setup
 
