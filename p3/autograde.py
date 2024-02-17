@@ -715,4 +715,6 @@ def client_workload_combined(hit_rate):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    tester_main(parser)
+    tester_main(
+        parser, required_files=["Dockerfile", "client.py", "mathdb.proto", "server.py"]
+    )
