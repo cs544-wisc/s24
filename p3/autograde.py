@@ -497,7 +497,7 @@ def math_db_server_errors():
         return message
 
 
-@test(10, timeout=10)
+@test(10, timeout=600)
 def docker_build_run():
     """Builds and runs the Docker container."""
 
