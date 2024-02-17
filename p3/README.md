@@ -4,7 +4,7 @@
 
 ## Overview
 
-In this project, you will write a database to handle simple math operations (addition, subtraction, multiplication, and division). This is similar to a _key-value store_, but comes with the added functionality of the the math operations.
+In this project, you will write a database to handle simple math operations (addition, subtraction, multiplication, and division). This is similar to a _key-value store_, but comes with the added functionality of the math operations.
 
 Your database will use multiple threads and cache calculation results. This will save effort when the database is given the same inputs repeatedly.
 
@@ -25,7 +25,6 @@ Before starting, please review the [general project directions](../projects.md).
     -   Protobuf typos in README fixed
     -   Add clarification on cache
     -   Dynamically import grpc
-
 
 ## Setup
 
@@ -84,7 +83,7 @@ Install the tools (be sure to upgrade pip first, as described in the directions)
 pip3 install grpcio==1.60.1 grpcio-tools==1.60.1 --break-system-packages
 ```
 
-Feel free to setup a virtualenv or similar if you comfortable. Otherwise, the above is also acceptable.
+Feel free to setup a virtualenv or similar if you are comfortable. Otherwise, the above is also acceptable.
 
 Create a file called `mathdb.proto` containing a service called `MathDb`.
 Specify `syntax="proto3";` at the top of your file.
@@ -182,10 +181,10 @@ python3 autograde.py
 
 This should include:
 
-- `client.py`
-- `server.py`
-- `mathdb.proto`
-- `Dockerfile`
+-   `client.py`
+-   `server.py`
+-   `mathdb.proto`
+-   `Dockerfile`
 
 ## Tester
 
