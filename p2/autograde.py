@@ -3,6 +3,8 @@ import argparse
 from tester import init, test, tester_main
 import nbutils
 
+REQUIRED_FILES = ["nb/p2.ipynb"]
+
 ANSWERS = {}
 
 @init
@@ -102,4 +104,4 @@ def q10():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    tester_main(parser)
+    tester_main(parser, required_files=REQUIRED_FILES)

@@ -3,6 +3,8 @@ import os, argparse
 
 from tester import init, test, cleanup, tester_main
 
+REQUIRED_FILES=["os.txt", "cpu.txt", "docker.txt", "compose.txt", "count.sh", "Dockerfile"]
+
 @init
 def init():
     os.system("docker rmi -f p1")
@@ -71,4 +73,4 @@ def run_test():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    tester_main(parser)
+    tester_main(parser, required_files=REQUIRED_FILES)

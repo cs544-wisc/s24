@@ -8,6 +8,12 @@ import multiprocessing
 
 multiprocessing.set_start_method("fork")
 
+def warn(msg):
+    print(f"\033[93mWarning: {msg}\033[00m")
+
+def error(msg):
+    print(f"\033[91mError: {msg}\033[00m")
+
 ARGS = None
 
 DEBUG = False
@@ -139,7 +145,20 @@ def save_results(results):
         json.dump(results, f, indent=2)
 
 
-def tester_main(parser):
+def check_files(test_dir, required_files):
+    if not os.path.isdir(f"{test_dir}/.git"):
+        warn(f"{test_dir} is not a repository")
+    
+    missing_files = []
+    for file in required_files:
+        if not os.path.exists(f"{test_dir}/{file}"):
+            missing_files.append(file)
+    if len(missing_files) > 0:
+        msg = ", ".join(missing_files)
+        warn(f"the following required files are missing: {msg}")
+
+
+def tester_main(parser, required_files=[]):
     global ARGS, VERBOSE, TEST_DIR, DEBUG
 
     parser.add_argument(
@@ -162,9 +181,12 @@ def tester_main(parser):
     DEBUG = args.debug
     test_dir = args.dir
     if not os.path.isdir(test_dir):
-        print("invalid path")
+        error("invalid path")
         return
     TEST_DIR = os.path.abspath(test_dir)
+
+    # check if required files are present
+    check_files(test_dir, required_files)
 
     # make a copy of the code
     def ignore(_dir_name, _dir_content): return [
