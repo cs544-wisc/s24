@@ -21,7 +21,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
--   2024-02-16: Protobuf typos in Readme fixed
+-   2024-02-16: Protobuf typos in README fixed, add clarification on cache
 
 ## Setup
 
@@ -48,11 +48,11 @@ If `key` is not present for any of the methods, simply raise a `KeyError`. (hint
 
 ### Caching
 
-Now you will add code for an LRU cache to your `MathCache` class. Requirements:
+Now you will add code for an LRU cache to your `MathCache` class. This cache is a separate data structure from the key-value store. Requirements:
 
 -   Use the operation name and key names as the key to the cache. E.g., `("add", "key_a", "key_b")`.
 -   The cache should hold a maximum of 10 entries.
--   Whenever `Set` is called, _invalidate_ the cache (clear out all the entries in the cache). We don't expect the same results now that the key values have changed.
+-   Whenever `Set` is called, _invalidate_ the cache (clear out all the entries in the cache). We don't expect the same results now that the key values have changed. (Note that in the real world, you could cleverly only invalidate the entries pertaining to the updated key, but you will not have to do that for this assignment.)
 
 At this point, try running `autograde.py`. The test `math_cache_lru_simple` and `math_cache_lru_complex` should pass.
 
