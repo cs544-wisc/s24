@@ -28,6 +28,7 @@ INIT = None
 TESTS = OrderedDict()
 CLEANUP = None
 
+
 # dataclass for storing test object info
 class _unit_test:
     def __init__(self, func, points, timeout, desc):
@@ -44,6 +45,14 @@ class _unit_test:
             if not result:
                 points = self.points
                 result = f"PASS ({self.points}/{self.points})"
+            else:
+                print(f"Test {self.func.__name__} failed:\n")
+                if isinstance(result, str):
+                    result = result.split("\n")
+                if isinstance(result, list):
+                    print("\n".join(result) + "\n")
+                else:
+                    print(result + "\n")
         except Exception as e:
             result = traceback.format_exception(e)
             print(f"Exception in {self.func.__name__}:\n")
@@ -62,16 +71,17 @@ def init(init_func):
 # test decorator
 def test(points, timeout=None, desc=""):
     def wrapper(test_func):
-        TESTS[test_func.__name__] = _unit_test(
-            test_func, points, timeout, desc)
+        TESTS[test_func.__name__] = _unit_test(test_func, points, timeout, desc)
 
     return wrapper
+
 
 # debug dir decorator
 def debug(debug_func):
     global DEBUG
     DEBUG = debug_func
     return debug_func
+
 
 # cleanup decorator
 def cleanup(cleanup_func):
@@ -83,6 +93,7 @@ def cleanup(cleanup_func):
 # get arguments
 def get_args():
     return ARGS
+
 
 # lists all tests
 def list_tests():
@@ -164,11 +175,14 @@ def tester_main(parser, required_files=[]):
     parser.add_argument(
         "-d", "--dir", type=str, default=".", help="path to your repository"
     )
-    parser.add_argument("-l", "--list", action="store_true",
-                        help="list all tests")
+    parser.add_argument("-l", "--list", action="store_true", help="list all tests")
     parser.add_argument("-v", "--verbose", action="store_true")
-    parser.add_argument("-g", "--debug", action="store_true",
-                        help="create a debug directory with the files used while testing")
+    parser.add_argument(
+        "-g",
+        "--debug",
+        action="store_true",
+        help="create a debug directory with the files used while testing",
+    )
     args = parser.parse_args()
 
     ARGS = args
@@ -189,10 +203,10 @@ def tester_main(parser, required_files=[]):
     check_files(test_dir, required_files)
 
     # make a copy of the code
-    def ignore(_dir_name, _dir_content): return [
-        ".git", ".github", "__pycache__", ".gitignore", "*.pyc", DEBUG_DIR]
-    shutil.copytree(src=TEST_DIR, dst=TMP_DIR,
-                    dirs_exist_ok=True, ignore=ignore)
+    def ignore(_dir_name, _dir_content):
+        return [".git", ".github", "__pycache__", ".gitignore", "*.pyc", DEBUG_DIR]
+
+    shutil.copytree(src=TEST_DIR, dst=TMP_DIR, dirs_exist_ok=True, ignore=ignore)
     os.chdir(TMP_DIR)
 
     # run init
