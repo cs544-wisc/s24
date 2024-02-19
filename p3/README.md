@@ -30,10 +30,15 @@ Before starting, please review the [general project directions](../projects.md).
     -   Clarify client use of third-party packages
     -   Clarify symmetric cache entries
 
-
 ## Setup
 
+Join the classroom and clone the provided code.
+
 Run `setup.sh` to get all of the relevant and up-to-date autograding files.
+
+Commit early and often to save your work!
+
+For this assignment, we recommend either using [VSCode with SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) or vim/nano via the terminal.
 
 ## Part 1: Math Cache
 
