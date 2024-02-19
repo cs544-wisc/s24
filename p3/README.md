@@ -25,6 +25,11 @@ Before starting, please review the [general project directions](../projects.md).
     -   Protobuf typos in README fixed
     -   Add clarification on cache
     -   Dynamically import grpc
+-   2024-02-19
+    -   Clarify client thread-safe mechanisms
+    -   Clarify client use of third-party packages
+    -   Clarify symmetric cache entries
+
 
 ## Setup
 
@@ -54,8 +59,12 @@ If `key` is not present for any of the methods, simply raise a `KeyError`. (hint
 Now you will add code for an LRU cache to your `MathCache` class. This cache is a separate data structure from the key-value store. Requirements:
 
 -   Use the operation name and key names as the key to the cache. E.g., `("add", "key_a", "key_b")`.
+    -   (Note that for simplicity we will not consider symmetric entries in the cache to be the same for symmtric operations like add or multiply.)
+
 -   The cache should hold a maximum of 10 entries.
--   Whenever `Set` is called, _invalidate_ the cache (clear out all the entries in the cache). We don't expect the same results now that the key values have changed. (Note that in the real world, you could cleverly only invalidate the entries pertaining to the updated key, but you will not have to do that for this assignment.)
+-   Whenever `Set` is called, _invalidate_ the cache (clear out all the entries in the cache). We don't expect the same results now that the key values have changed. 
+    -   (Note that in the real world, you could cleverly only invalidate the entries pertaining to the updated key, but you will not have to do that for this assignment.)
+
 
 At this point, try running `autograde.py`. The test `math_cache_lru_simple` and `math_cache_lru_complex` should pass.
 
@@ -151,7 +160,10 @@ _For this example_, your client should do the following, in order:
 
 1. Connect to the server at port `5440`.
 2. Launch three threads, each thread being responsible for one of the three CSV files.
-3. Each thread should loop over the rows in its CSV files. Each row will contain a command name and either one or two key names that should be used to make a call to the server. The threads should then collect some aggregate statistics about the total number of hits and misses. **Be sure do this in a thread safe way!** You can either aggregate the totals for each thread independently or access a global variable if it is protected by lock!
+3. Each thread should loop over the rows in its CSV files.
+   - Each row will contain a command name and either one or two key names that should be used to make a call to the server.
+   - The threads should then collect some aggregate statistics about the total number of hits and misses. **Be sure do this in a thread safe way!** You can either aggregate the totals for each thread independently using a global array indexed by the thread index or access a global variable if it is protected by lock!
+
 4. The main thread should call `join` to wait until the 3 threads are finished.
 
 Note that your client should work for any number ($n \geq 1$) of CSV files.
@@ -169,6 +181,8 @@ You should write a `Dockerfile` to build an image with everything needed (Python
 -   Either `python3 client.py <PORT> <THREAD1-WORK.csv> <THREAD2-WORK.csv> <THREAD3-WORK.csv> ...` or `docker exec -it <CONTAINER-NAME> python3 client.py <PORT> <PORT> <THREAD1-WORK.csv> <THREAD2-WORK.csv> <THREAD3-WORK.csv>`
 
 You should then be able to run the client outside of the container (using any port you would like), or use a `docker exec` to enter the container and run the client with port 5440.
+
+Your client should not use any packages outside of `numpy` or `pandas` (again, these are not necessary; an alternative such as the built-in `csv.DictReader` will suffice). If you have already included them, please let us know so that we may grade them appropriately!
 
 ## Submission
 
