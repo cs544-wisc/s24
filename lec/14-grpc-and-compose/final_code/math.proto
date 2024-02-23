@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+// messages (protocol buffers, aka "protobufs")
+
+/*
+message <NAME> {
+	<TYPE> <VARIABLE1> = <UNIQUE ID>;
+	<TYPE> <VARIABLE1> = <UNIQUE ID>;
+	<TYPE> <ERROR_VARIABLE1> = <UNIQUE ID>;
+}
+
+Why unique IDs? 
+Saves us network bytes if variable names are too long.
+*/
+
+// REQUEST MESSAGES
+message MultReq {
+        int32 x = 1;
+        int32 y = 2;
+}
+
+message MultManyReq {
+        repeated int32 nums = 1;
+}
+
+// RESPONSE MESSAGES
+message MultResp {
+        int32 result = 1;
+	string error = 2;
+}
+
+// services (RPC functions)
+
+/*
+service <NAME> {
+	rpc <NAME OF PROCEDURE>(<REQUEST MESSAGE NAME>) returns (<RESPONSE MESSAGE NAME>)
+}
+*/
+
+service Calc {
+        rpc Mult(MultReq) returns (MultResp);
+        rpc MultMany(MultManyReq) returns (MultResp);
+}

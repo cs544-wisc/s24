@@ -1,0 +1,14 @@
+python3 # interactive mode
+import math_pb2
+math_pb2.MultReq(2, 3) # TypeError
+math_pb2.MultReq(x=2, y=3)
+pb = math_pb2.MultReq(x=2, y=3)
+s = pb.SerializeToString()
+type(s)
+len(s)
+pb = math_pb2.MultReq(x=2, y=654321)
+s = pb.SerializeToString()
+type(s)
+len(s)
+pb = math_pb2.MultReq(x=2, y=654321654321) # ValueError
+# Why ValueError? Both Python and gRPC use variable length encoding for integers. Remember in Python we don't have any limits for integer size. But other programming languages (like Java) have limits. To facilitate communication between languges they enforced the caps.
