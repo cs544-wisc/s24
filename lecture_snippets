@@ -1,3 +1,24 @@
+Lecture 12 (Feb 19):
+
+Docker run:
+docker run -d -p 127.0.0.1:5440:5440 -v ./nb:/nb -m 512m pyarrow
+
+Process memory usage:
+cd /proc
+ls
+cd <pid>
+cat maps
+cat maps | grep test.arrow
+
+Add swap space (caching for anonymous data):
+sudo fallocate -l 1G /swapfile
+sudo chmod g-r /swapfile
+sudo chmod o-r /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo swapoff /swapfile
+________________________________________________________________________________
+
 Lecture 6 (Feb 5):
 
 docker build . -t pytorch
