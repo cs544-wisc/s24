@@ -3,6 +3,7 @@ import traceback
 import math_pb2_grpc
 import math_pb2
 import grpc
+import numpy as np
 
 class MyCalc(math_pb2_grpc.CalcServicer):
     def Mult(self, request, context):
@@ -21,6 +22,7 @@ class MyCalc(math_pb2_grpc.CalcServicer):
             for num in request.nums:
                 total *= num
         except Exception:
+            total = np.nan
             err = traceback.format_exc()
         return math_pb2.MultResp(result = total, error = err)
     
