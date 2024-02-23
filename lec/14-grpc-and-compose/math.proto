@@ -1,0 +1,24 @@
+// messages (protocol buffers, aka "protobufs")
+
+/*
+message <NAME> {
+	<TYPE> <VARIABLE1> = <UNIQUE ID>;
+	<TYPE> <VARIABLE1> = <UNIQUE ID>;
+	<TYPE> <ERROR_VARIABLE1> = <UNIQUE ID>;
+}
+
+Why unique IDs? 
+Saves us network bytes if variable names are too long.
+*/
+
+// REQUEST MESSAGES
+
+// RESPONSE MESSAGES
+
+// services (RPC functions)
+
+/*
+service <NAME> {
+	rpc <NAME OF PROCEDURE>(<REQUEST MESSAGE NAME>) returns (<RESPONSE MESSAGE NAME>)
+}
+*/
