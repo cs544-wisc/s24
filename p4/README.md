@@ -69,8 +69,18 @@ docker build . -f datanode.Dockerfile -t p4-dn
 
 Requirements:
 * like `p4-nb`, both these should use `p4-hdfs` as a base
-* `namenode.Dockerfile` should run two commands, `hdfs namenode -format` and `hdfs namenode -D dfs.namenode.stale.datanode.interval=10000 -D dfs.namenode.heartbeat.recheck-interval=30000 -fs hdfs://boss:9000`
-* `datanode.Dockerfile` should just run `hdfs datanode -D dfs.datanode.data.dir=/var/datanode -fs hdfs://boss:9000`
+* `namenode.Dockerfile` should run two commands:
+ ```
+ hdfs namenode -format
+ ```
+ ```
+ hdfs namenode -D dfs.namenode.stale.datanode interval=1000 -D dfs.namenode.heartbeat recheck-interval=1000 -D dfs.heartbeat.interval=1000ms -D dfs.namenode.avoid.read.stale.datanode=True -fs hdfs://boss:9000
+  ```
+* `datanode.Dockerfile` should just run 
+
+```
+hdfs datanode -D dfs.datanode.data.dir=/var/datanode -fs hdfs://boss:9000
+```
 
 You can use `docker compose up -d` to start your mini cluster.  You
 can run `docker compose kill; docker compose rm -f` to stop and delete
@@ -314,7 +324,6 @@ example, you could write a .py module used by both notebooks).
 * Run `setup.sh` to install the packages needed for the autograder (you may already have them installed - just in case)
 * After you push your final submission, try cloning your repo into a new temp folder and run the test there; this will simulate how we run the tests during grading. 
 * Copy in `tester.py` from the main github directory into your p4 folder
-* You can run `python3 autograde.py -g` to create a debug directory which will contain the notebooks that were used for testing. This will let you examine the state of the notebooks and catch errors
 * Make sure your answers are in cell output - not print statements (see the example below)
 ```
 my_answer = []
