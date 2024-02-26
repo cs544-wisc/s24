@@ -10,6 +10,8 @@ import pandas as pd
 import sys
 from tester import init, test, tester_main, debug
 import traceback
+from argparse import ArgumentParser
+
 
 # key=num, val=answer (as string)
 ANSWERS = {}
@@ -351,5 +353,9 @@ def q10():
 
 if __name__ == "__main__":
     diagnostic_checks()
-    tester_main()
+    parser = ArgumentParser()
+    tester_main(parser, required_files = ['nb/p4a.ipynb', 'nb/p4b.ipynb', \
+                                          'datanode.Dockerfile', 'hdfs.Dockerfile', \
+                                          'notebook.Dockerfile', 'docker-compose.yml', \
+                                          'namenode.Dockerfile'])
     docker_reset()
