@@ -1,0 +1,38 @@
+Inside starter directory:
+
+python3 server.py &
+python3 client.py 5440 # total should be 1
+python3 client.py 5440 # total should be 2
+python3 client.py 5440 # total should be 3
+pkill python3
+--------------------------------------------------------------------------------
+
+docker build . -t counter
+docker run -d -p 127.0.0.1:1234:5440 counter
+
+--------------------------------------------------------------------------------
+
+Inside starter directory:
+python3 client.py 1234 # total should be 1
+--------------------------------------------------------------------------------
+
+docker ps # get the container name
+docker exec -it <NAME> bash
+python3 client.py 5440 # total should be 2
+python3 client.py 1234 # shouldn't work! Why? We are inside the container and not inside the VM.
+--------------------------------------------------------------------------------
+
+Inside starter directory:
+python3 client.py 5440 # shouldn't work! Why? We are inside the VM and not the container.
+--------------------------------------------------------------------------------
+
+Inside starter directory:
+docker compose up -d
+docker ps # this should show three containers now
+python3 client.py 5000 # total should be 1
+python3 client.py 5000 # total should be 2
+python3 client.py 5000 # total should be 3
+python3 client.py 5000 # total should be 4
+python3 client.py 5001 # total should be 1. Why? We are sending request to second container now
+python3 client.py 5002 # total should be 1. Why? We are sending request to third container now
+docker compose down
