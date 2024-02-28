@@ -1,0 +1,18 @@
+mount # shows all mounted file systems
+df
+df -h
+df -h .
+cd / run
+df -h .
+cd /proc
+sudo touch hi.txt
+sleep 100 &
+ps ax | grep sleep
+cd <PID>
+mkdir ~/scratch
+cd ~/scratch
+mkdir demo
+touch demo/a.txt
+docker run -it -v ./demo/:/test counter bash
+mount
+mount | grep test
