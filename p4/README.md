@@ -26,7 +26,7 @@ Learning objectives:
 
 Before starting, please review the [general project directions](../projects.md).
 
-
+**Before proceeding, [please create your project repository](https://classroom.github.com/a/LeHl5F7g)** 
 
 ## Corrections/Clarifications
 
