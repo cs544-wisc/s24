@@ -1,3 +1,21 @@
+Lecture 17 (Mar 4):
+
+MySQL setup:
+pip3 install SQLAlchemy mysql-connector-python
+
+docker pull mysql
+docker run -d -m "1g" -p 127.0.0.1:3306:3306 -e MYSQL_DATABASE=cs544 -e MYSQL_ROOT_PASSWORD=abc mysql
+
+docker exec -it <CONTAINER NAME> bash
+
+mysql -p cs544
+help
+show tables;
+drop table users;
+select * from users;
+select * from accounts;
+________________________________________________________________________________
+
 Lecture 14 (Feb 23):
 
 sudo apt-get install python3-pip
