@@ -69,14 +69,16 @@ Requirements:
  ```
  hdfs namenode -D dfs.namenode.stale.datanode.interval=1000 -D dfs.namenode.heartbeat.recheck-interval=1000 -D dfs.heartbeat.interval=1000ms -D dfs.namenode.avoid.read.stale.datanode=True -fs hdfs://boss:9000
   ```
-* `datanode.Dockerfile` should just run 
+* `datanode.Dockerfile` should run 
 
 ```
 hdfs datanode -D dfs.datanode.data.dir=/var/datanode -fs hdfs://boss:9000
 ```
 
-You can use `docker compose up -d` to start your mini cluster.  You
-can run `docker compose kill; docker compose rm -f` to stop and delete
+You can use `docker compose up` to start your mini cluster. Examine the messages to make sure it launched ok. In future launches, you can use `docker compose up -d`.
+
+
+You can run `docker compose kill; docker compose rm -f` to stop and delete
 all the containers in your cluster as needed.  For simplicity, we
 recommend this rather than restarting a single container when you need
 to change something as it avoids some tricky issues with HDFS.  For
