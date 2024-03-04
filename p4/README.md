@@ -1,5 +1,6 @@
 # P4 (6% of grade): HDFS Replication
 
+## [Github Classroom Link](https://classroom.github.com/a/LeHl5F7g)
 ## Overview
 
 HDFS can *partition* large files into blocks to share the storage
@@ -24,7 +25,7 @@ Learning objectives:
 
 Before starting, please review the [general project directions](../projects.md).
 
-**Before proceeding, [please create your project repository](https://classroom.github.com/a/LeHl5F7g)** 
+**Before proceeding, [please make sure you created your project repository](https://classroom.github.com/a/LeHl5F7g)** 
 
 ## Corrections/Clarifications
 
