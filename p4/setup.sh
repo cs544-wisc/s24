@@ -1,8 +1,9 @@
 #!/bin/bash
-wget https://raw.githubusercontent.com/cs544-wisc/s24/main/p4/autograde.py -O autograde.py
-wget https://raw.githubusercontent.com/cs544-wisc/s24/main/nbutils.py -O nbutils.py
-wget https://raw.githubusercontent.com/cs544-wisc/s24/main/tester.py -O tester.py
-
 sudo apt-get update
-sudo apt install python3-pip
-pip3 install pandas docker
+sudo apt install -y python3 python3-pip
+pip3 install pandas docker 
+
+for filename in "tester.py" "p4/autograde.py" "p4/docker-compose.yml" "p4/hdfs.Dockerfile" "p4/notebook.Dockerfile" "nbutils.py"
+do
+    wget https://raw.githubusercontent.com/cs544-wisc/s24/main/$filename -O $(basename $filename)
+done
