@@ -32,7 +32,7 @@ Before starting, please review the [general project directions](../projects.md).
 ## Part 1: Deployment and Data Upload
 
 
-Before you begin, please run the below command in your p4 directory. This will stop git from trying to track CSV files which will save you a lot of headaches (This step will not be graded - it is just to help you). 
+Before you begin, please run the below command and the `setup.sh` file in your p4 directory. This will download needed files and stop git from trying to track CSV files which will save you a lot of headaches (This step will not be graded - it is just to help you). 
 
 ```
 echo "*.csv" >> .gitignore
@@ -311,7 +311,6 @@ example, you could write a .py module used by both notebooks).
 
 ## Tester:
 * Expected that you use Python 3.10.12
-* Run `setup.sh` to install the packages needed for the autograder (you may already have them installed - just in case)
 * After you push your final submission, try cloning your repo into a new temp folder and run the test there; this will simulate how we run the tests during grading. 
 * Copy in `tester.py` from the main GitHub directory into your p4 folder
 * Make sure your answers are in cell output - not print statements (see the example below)
