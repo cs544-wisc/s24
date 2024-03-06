@@ -1,7 +1,6 @@
-# DRAFT!  Don't start yet.
-
 # P4 (6% of grade): HDFS Replication
 
+## [Github Classroom Link](https://classroom.github.com/a/LeHl5F7g)
 ## Overview
 
 HDFS can *partition* large files into blocks to share the storage
@@ -14,31 +13,26 @@ code to read the file.  When data is partially lost (due to a node
 failing), your code will recover as much data as possible from the
 damaged file.
 
-**Remember to switch to an e2-medium for this project:** [VM schedule](../projects.md#compute-setup). Note you can edit your existing instance to an e2-medium instead of deleting your old and creating a new vm. This [tutorial](https://cloud.google.com/compute/docs/instances/changing-machine-type-of-stopped-instance) should help you switch over.
+**Remember to switch to an e2-medium for this project:** [VM schedule](../projects.md#compute-setup). Note you can edit your existing instance to an e2-medium instead of deleting your old one and creating a new VM. This [tutorial](https://cloud.google.com/compute/docs/instances/changing-machine-type-of-stopped-instance) should help you switch over.
 
-If you switched machines, remember to reinstall Docker and also to enable Docker to be run without sudo. Refer to P1 for instructions. 
+If you switched machines, remember to reinstall Docker and to also enable Docker to be run without sudo. Refer to P1 for instructions. 
 
 Learning objectives:
 * use the HDFS command line client to upload files
-* use the webhdfs API (https://hadoop.apache.org/docs/r3.3.6/hadoop-project-dist/hadoop-hdfs/WebHDFS.html) to read files
+* use the webHDFS API (https://hadoop.apache.org/docs/r3.3.6/hadoop-project-dist/hadoop-hdfs/WebHDFS.html) to read files
 * use PyArrow to read HDFS files
 * relate replication count to space efficiency and fault tolerance
 
 Before starting, please review the [general project directions](../projects.md).
 
-
+**Before proceeding, [please make sure you created your project repository](https://classroom.github.com/a/LeHl5F7g)** 
 
 ## Corrections/Clarifications
-
-* October 18th: Added clarification on which port jupyterlab is being hosted
-* Oct. 18: Added link to tutorial to change instance type
-* Oct. 18: added step to create `.gitignore` file to save students time
-* Oct. 25: Updated notebook.Dockerfile to use older version of jupyter client
 
 ## Part 1: Deployment and Data Upload
 
 
-Before you begin, please run the below command in your p4 directory. This will stop git from trying to track csv files which will save you a lot of headaches (This step will not be graded - it is just to help you). 
+Before you begin, please run the below command and the `setup.sh` file in your p4 directory. This will download needed files and stop git from trying to track CSV files which will save you a lot of headaches (This step will not be graded - it is just to help you). 
 
 ```
 echo "*.csv" >> .gitignore
@@ -76,14 +70,16 @@ Requirements:
  ```
  hdfs namenode -D dfs.namenode.stale.datanode.interval=1000 -D dfs.namenode.heartbeat.recheck-interval=1000 -D dfs.heartbeat.interval=1000ms -D dfs.namenode.avoid.read.stale.datanode=True -fs hdfs://boss:9000
   ```
-* `datanode.Dockerfile` should just run 
+* `datanode.Dockerfile` should run 
 
 ```
 hdfs datanode -D dfs.datanode.data.dir=/var/datanode -fs hdfs://boss:9000
 ```
 
-You can use `docker compose up -d` to start your mini cluster.  You
-can run `docker compose kill; docker compose rm -f` to stop and delete
+You can use `docker compose up` to start your mini cluster. Examine the messages to make sure it launched ok. In future launches, you can use `docker compose up -d`.
+
+
+You can run `docker compose kill; docker compose rm -f` to stop and delete
 all the containers in your cluster as needed.  For simplicity, we
 recommend this rather than restarting a single container when you need
 to change something as it avoids some tricky issues with HDFS.  For
@@ -154,7 +150,7 @@ You should see something like this:
 ```
 
 The first columns show the logical and physical sizes.  The two CSVs
-contain the same data, so the have the same logical sizes.  Note the
+contain the same data, so they have the same logical sizes.  Note the
 difference in physical size due to replication, though.
 
 ## Part 2: WebHDFS
@@ -193,7 +189,7 @@ questions.
 #### Q4: what is the location for the first block of single.csv?
 
 Use the `OPEN` operation with `offset` 0 and `noredirect=true` - (`length` and `buffersize` are optional).
-You answer should a string, similar to this:
+Your answer should be a string, similar to this:
 
 ```python
 'http://6a2464e4ba5c:9864/webhdfs/v1/single.csv?op=OPEN&namenoderpcaddress=boss:9000&offset=0'
@@ -204,7 +200,7 @@ the container running the DataNode, so yours will be different.
 
 #### Q5: how are the blocks of single.csv distributed across the two DataNode containers?
 
-This is similar to above, except you should check every block andextract the container ID from the URL.
+This is similar to above, except you should check every block and extract the container ID from the URL.
 
 You should produce a Python dictionary similar to below (your IDs and counts will be different, of course).
 
@@ -267,14 +263,8 @@ Live datanodes (1)
 ...
 ```
 
-You might need to wait a couple minutes and re-run this until the NameNode recognizes that the DataNode has died.
+You might need to wait a couple of minutes and re-run this until the NameNode recognizes that the DataNode has died.
 
-
-**Important** - Add the below line to a cell below q8 but before q9. This is for the autograder. You do not need to run it.
-```
-import time
-time.sleep(30)
-```
 #### Q9: how are the blocks of single.csv distributed across the DataNode containers?
 
 This is the same as Q5, but you'll need to do a little extra work.
@@ -313,7 +303,7 @@ We should then be able to open `http://localhost:5000/lab` and find
 your `p4a.ipynb` and `p4b.ipynb` notebooks and run them.
 
 To make sure you didn't forget to push anything, we recommend doing a
-`git clone` of your repo to a new location and going through these
+`git clone` of your repo to a new location and go through these
 steps as a last check on your submission.
 
 You're free to create and include other code files if you like (for
@@ -321,9 +311,8 @@ example, you could write a .py module used by both notebooks).
 
 ## Tester:
 * Expected that you use Python 3.10.12
-* Run `setup.sh` to install the packages needed for the autograder (you may already have them installed - just in case)
 * After you push your final submission, try cloning your repo into a new temp folder and run the test there; this will simulate how we run the tests during grading. 
-* Copy in `tester.py` from the main github directory into your p4 folder
+* Copy in `tester.py` from the main GitHub directory into your p4 folder
 * Make sure your answers are in cell output - not print statements (see the example below)
 ```
 my_answer = []

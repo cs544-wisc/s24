@@ -175,7 +175,7 @@ Note that your client should work for any number ($n \geq 1$) of CSV files.
 
 The client can print other stuff, but its very last line of output should be the overall hit rate. For example, if the hit counts and total counts for the three threads are 1/1, 0/1, and 3/8 respectively, then the overall hit rate would be (1+0+3) / (1+1+8) = 0.4.
 
-At this point, try running `autograde.py`. The tests `client_workload_{1,2,3,combined}` should pass.
+For the client, the tests `client_workload_{1,2,3,combined}` should pass. This requires you to have written the `Dockerfile` first, so proceed to [Part 4](#part-4-deployment).
 
 ## Part 4: Deployment
 
