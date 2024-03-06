@@ -1,3 +1,22 @@
+Lecture 18 (Mar 6):
+
+docker build . -f hdfs.Dockerfile -t p4-hdfs
+docker build . -f notebook.Dockerfile -t p4-nb
+
+docker compose -d
+
+docker exec -it <HDFS CONTAINER NAME> bash
+which hdfs
+hdfs
+hdfs namenode --help
+hdfs namenode -fs hdfs://main:9000 -format
+hdfs namenode -fs hdfs://main:9000 &> /tmp/nn.txt &
+tail -f /tmp/nn.txt
+hdfs dfsadmin -fs hdfs://main:9000 -report  
+hdfs datanode -fs hdfs://main:9000 &> /tmp/dn.txt &
+hdfs dfsadmin -fs hdfs://main:9000 -report  
+________________________________________________________________________________
+
 Lecture 17 (Mar 4):
 
 MySQL setup:
