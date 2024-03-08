@@ -3,7 +3,7 @@ Lecture 18 (Mar 6):
 docker build . -f hdfs.Dockerfile -t p4-hdfs
 docker build . -f notebook.Dockerfile -t p4-nb
 
-docker compose -d
+docker compose up -d
 
 docker exec -it <HDFS CONTAINER NAME> bash
 which hdfs
