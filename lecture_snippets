@@ -1,3 +1,12 @@
+Lecture 21 (Mar 13):
+
+docker build . -t spark-demo
+docker compose up -d
+
+SSH tunnel:
+ssh <USER>@IP -L localhost:5000:localhost:5000 -L localhost:4040:localhost:4040
+________________________________________________________________________________
+
 Lecture 18 (Mar 6):
 
 docker build . -f hdfs.Dockerfile -t p4-hdfs
