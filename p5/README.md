@@ -26,50 +26,58 @@ Learning objectives:
 Before starting, please revisit the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
-* Nov 2nd: A hint on q7 on how to join with `counties` is added.
+None
 
 
 ## Cluster Setup
 
+### Development Environment
+
+Click the Github classroom link and initiate your repository for this project. Now, clone the project repository on your VM. Your clone repository should have a `setup.sh` file inside. Run `./setup.sh` to download all the relevant files for this project. Note that, you may have to run the `setup.sh` again to update the files if there are any changes.
+
 ### Virtual Machine
+
+#### Cleanup Docker
+
+Due to storage constraints in your VM, you should remove any previous docker images, containers and networks. To stop any running containers, run `docker stop ${docker ps -aq}`. Then, you should run `docker system prune -af` to remove all the stopped containers, related docker images and networks. 
+
+You may do these steps again to cleanup the storage if your disk becomes full.
+
+#### Increase Swap Space
 
 ~4 GB is barely enough for P5. Brefore you start, take a moment to enable a 1
 GB swap file to supplement.  A swap file is on storage, but acts
 as extra memory. This has performance implications as storage is
 much slower than RAM (as what we have studied in class).  
 
-
+Run the following commands in your Google Cloud VM to increase the size of swap to **1 GB**. You can optionally go through this [blog](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04) to know the detail.
 ```
-# https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-# htop should show 1 GB of swap beneath memory
 ```
+
+#### Check Swap Space
+
+Now, you should check if the swap space has actually been increased. Run the command `free -m`. This will show the total size of Swap in megabytes.
 
 ### Containers
 
-For this project, you'll deploy a small cluster of containers:
+For this project, you'll deploy a small cluster of containers. See the table below to understand the docker images we need and how many containers will be created. You should read the [`docker-compose.yml`](./docker-compose.yml) file to understand better.
 
-* `p5-nb` (1 Jupyter container)
-* `p5-nn` (1 NameNode container)
-* `p5-dn` (1 DataNode container)
-* `p5-boss` (1 Spark boss container)
-* `p5-worker` (2 Spark worker containers)
+| Image Name     | Purpose        | Container Count | Dockerfile            |
+| -------------- | -------------- | --------------- | --------------------- |
+| `p5-base`      | Base Image     | 0               | `p5-base.Dockerfile`  |
+| `p5-nb`        | Jupyter        | 1               | `notebook.Dockerfile` |
+| `p5-nn`        | NameNode       | 1               | `namenode.Dockerfile` |
+| `p5-dn`        | DataNode       | 1               | `datanode.Dockerfile` |
+| `p5-boss`      | Spark boss     | 1               | Create yourself       |
+| `p5-worker`    | Spark worker   | 2               | Create yourself       |
 
-You should be able to build all these images like this:
+#### Boss and Worker Dockerfile
 
-```
-docker build . -f p5-base.Dockerfile -t p5-base
-docker build . -f notebook.Dockerfile -t p5-nb
-docker build . -f namenode.Dockerfile -t p5-nn
-docker build . -f datanode.Dockerfile -t p5-dn
-docker build . -f boss.Dockerfile -t p5-boss
-docker build . -f worker.Dockerfile -t p5-worker
-```
-
-We provide most of the Dockerfiles mentioned above, but you'll need to write 
+We only provide four of the dockerfiles. You'll need to write 
 `boss.Dockerfile` and `worker.Dockerfile` yourself. These Dockerfiles will invoke
 the Spark boss and workers and will use `p5-base` as their base Docker image.
 
@@ -80,14 +88,33 @@ the full path to these .sh scripts). These scripts launch the Spark
 boss and workers in the background and then exit. Make sure that the containers
 do not exit along with the script and instead keep running until manually stopped.
 
-You should then be able to use the `docker-compose.yml` we proved to
+#### Build Images
+
+Once all of the six dockerfiles are ready, you should be able to build them all using the following commands.
+
+```bash
+docker build . -f p5-base.Dockerfile -t p5-base
+docker build . -f notebook.Dockerfile -t p5-nb
+docker build . -f namenode.Dockerfile -t p5-nn
+docker build . -f datanode.Dockerfile -t p5-dn
+docker build . -f boss.Dockerfile -t p5-boss
+docker build . -f worker.Dockerfile -t p5-worker
+```
+
+Be patient as it takes a while to build all of these. To check, run `docker images`. You should be able to see the names of these six images.
+
+#### Start the Cluster
+
+You should then be able to use the `docker-compose.yml` we provided to
 run `docker compose up -d`.  Wait a bit and make sure all containers
-are still running.  If some are starting up and then exiting, troubleshoot
-the reason before proceeding.
+are still running. You can run `docker ps` to check if there are **six** containers running.
+
+If some are starting up and then exiting, troubleshoot
+the reason before proceeding further.
 
 ## Data Setup
 
-### Virtual Machine
+<!-- ### Virtual Machine
 
 The Docker Compose setup maps a	`nb` directory into your Jupyter
 container.  Within `nb`, you need to create a subdirectory called
@@ -106,16 +133,29 @@ unzip -o code_sheets.zip -d nb/data
 ```
 
 You'll probably	need to	change some permissions	(`chmod`) or run as
-root (`sudo su`) to be able to do this.
+root (`sudo su`) to be able to do this. -->
 
 ### Jupyter Container
 
-Connect to JupyterLab inside your container, and create a notebook
-called `p5.ipynb`.  Put your name(s) in a comment at the top.
+Connect to JupyterLab inside your container. Take a look inside the `/nb` folder.
+You should be able to see a `p5.ipynb` file and a `data` folder. The structure of the `nb` folder is as follows.
 
-Run a shell command (`hdfs dfs -D dfs.replication=1 -cp -f data/*.csv
-hdfs://nn:9000/` in a cell to upload the CSVs from the local file
-system to HDFS).
+```
+/
+|--- nb
+     |--- p5.ipynb
+     |--- data
+          |--- action_taken.csv
+          |--- agency.csv
+          |--- <other csv files>
+          |--- tracts.csv
+```
+
+Run the following shell command in a notebook cell to upload the CSVs from the local file system to HDFS.
+
+```
+hdfs dfs -D dfs.replication=1 -cp -f data/*.csv hdfs://nn:9000/
+```
 
 ## Part 1: Filtering: RDDs, DataFrames, and Spark
 
