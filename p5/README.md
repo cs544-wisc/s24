@@ -172,7 +172,7 @@ spark = (SparkSession.builder.appName("cs544")
          .getOrCreate())
 ```
 
-#### Q1: how many banks contain the word "first" in their name, ignoring case?  Use an **RDD** to answer.
+#### Q1: How many banks contain the words "The" and "National" (case sensitive) in their name? Use an **RDD** to answer.
 
 The `arid2017_to_lei_xref_csv.csv` contains the banks, so you can use the following to read it to a DataFrame.
 
@@ -202,7 +202,7 @@ Use the some format as previous projects for all your notebook answers
 (last line of a cell contains an expression giving the answer, and the
 cell starts with a "#q1" comment, or similar).
 
-#### Q2: how many banks contain the word "first" in their name, ignoring case?  Use a **DataFrame** to answer.
+#### Q2: Same as Q1. This time, use a **DataFrame** (instead of RDD) to answer.
 
 This is the same as Q1, but now you must operate on `banks_df` itself,
 without directly accessing the underlying `RDD`.
@@ -212,9 +212,9 @@ DataFrames also have `filter` transformations and `count` actions, but
 the same syntax as a condition in SQL, so these resources may help:
 
 * https://www.w3schools.com/sql/sql_like.asp
-* https://www.w3schools.com/sql/func_sqlserver_lower.asp
+<!-- * https://www.w3schools.com/sql/func_sqlserver_lower.asp -->
 
-#### Q3: how many banks contain the word "first" in their name, ignoring case?  Use **Spark SQL** to answer.
+#### Q3: Same as Q1. This time, use **Spark SQL** (instead of RDD) to answer.
 
 To write a SQL query to answer this, we first need to load into a Hive
 table.  You can do so with this:
@@ -228,28 +228,26 @@ the answer.  This call will return the results as a Spark DataFrame --
 you'll need to do a little extra Python work to get this out as a
 single int for your answer.
 
+Answers of Q1, Q2 and Q3 should be the same.
+
 ## Part 2: Hive Data Warehouse
 
 #### `loans` table
 
-You have already added a `banks` table to Hive (using the command we
-shared with you).
-
-Now, write similar code `hdma-wi-2021.csv` into a table called
-`loans`.
-
-Note that `writeTable` will produce one or more Parquet files in
-`hdfs://nn:9000/user/hive/warehouse` (look back at how you created
-your Spark session to see this).
+You have already added a `banks` table to Hive (using the command we shared with you). Now, write similar code `hdma-wi-2021.csv` into a table called `loans`. 
 
 Use
 [`bucketBy`](https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrameWriter.bucketBy.html)
-with your `writeTable` call to create 8 buckets on column
+with your `saveAsTable` call to create 8 buckets on column
 `county_code`.  This means that your written data will be broken into
 8 buckets/groups, and all the rows will the same county will be in the
 same bucket/group.  This will make some queries faster (for example,
 if you `GROUP BY` on `county_code`, Spark might be able to avoid
 shuffling/exchanging data across partitions/machines).
+
+**Extra:** Note that, `saveAsTable` will produce one or more Parquet files in
+`hdfs://nn:9000/user/hive/warehouse`. Look back at how you created
+your Spark session to see this. You can run `!hdfs dfs -ls hdfs://nn:9000/user/hive/warehouse/loans` to see the parquet files of `loans` table.
 
 #### Other views
 
@@ -263,7 +261,7 @@ Use `createOrReplaceTempView` to create Hive views for each of the names in this
 The contents should correspond to the CSV files of the same name in
 HDFS.  Don't forget about headers and schema inference!
 
-#### Q4: what tables are in our warehouse?
+#### Q4: What tables are in our warehouse?
 
 You can use `spark.sql("SHOW TABLES").show()` to see your tables in the warehouse as follows. 
 
@@ -307,24 +305,36 @@ Answer with a Python dict looks like this
 ```
 
 
-#### Q5: how many loan applications has the bank "University of Wisconsin Credit Union" received in 2020 in this dataset?
+#### Q5: How many loan applications has the bank "First National Bank" received in 2020 in this dataset?
 
 Use an `INNER JOIN` between `banks` (`banks.lei_2020`) and `loans` (`loans.lei`) to answer this
 question.  `lei` in `loans` lets you identify the bank.  Filter on
-`respondent_name` (do NOT hardcode the LEI).
+`respondent_name`. Do NOT hardcode the `lei_2020`.
 
-#### Q6: what does `.explain("formatted")` tell us about how Spark executes Q5?
+#### Q6: What does `.explain("formatted")` tell us about how Spark executes Q5?
 
 Show the output, then write comments (which we will manually grade) explaining the following:
 
 1. Which table is sent to every executor via a `BroadcastExchange` operation?
 2. Does the plan involve `HashAggregate`s (depending on how you write the query, it may or may not)?  If so, which ones?
 
+For this, have a cell in your notebook that looks like the following:
+
+```python
+#q6
+# .. your ..
+# .. answers ..
+```
+
 ## Part 3: Grouping Rows
 
-#### Q7: what are the average interest rates for Wells Fargo applications for the ten counties where Wells Fargo receives the most applications?
+#### Q7: What are the application counts for Wells Fargo applications for the ten counties where Wells Fargo applications have the highest average loan amount?
 
-Hint: `county_code` in `loans` is the state and county codes concatenated together whereas `counties` has these as separate columns (as an example, 55025 is the county_code for Dane county in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
+Let's break it down into two parts. 
+* Think about the ten counties where *Wells Fargo* applications have the highest average loan amount. 
+* Now, that you have the name of those counties, how many applications have been made form those counties to *Wells Fargo*.
+
+**Information:** `county_code` in `loans` is the state and county codes concatenated together whereas `counties` has these as separate columns (as an example, 55025 is the county_code for Dane county in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
 ```python
 ...
 ON loans.county_code = counties.STATE*1000 + counties.COUNTY
@@ -334,27 +344,27 @@ ON loans.county_code = counties.STATE*1000 + counties.COUNTY
 Answer Q7 with a Python `dict` that looks like this:
 
 ```python
-{'Milwaukee': 3.1173465727097907,
- 'Waukesha': 2.8758225602027756,
- 'Washington': 2.851009389671362,
- 'Dane': 2.890674955595027,
- 'Brown': 3.010949119373777,
- 'Racine': 3.099783715012723,
- 'Outagamie': 2.979661835748792,
- 'Winnebago': 3.0284761904761908,
- 'Ozaukee': 2.8673765432098772,
- 'Sheboygan': 2.995511111111111}
+{'Sawyer': 38,
+ 'Door': 174,
+ 'Forest': 7,
+ 'Ozaukee': 389,
+ 'Bayfield': 33,
+ 'Waukesha': 1832,
+ 'Vilas': 68,
+ 'Dane': 729,
+ 'Oneida': 70,
+ 'Florence': 8}
 ```
 
 The cell following your answer should have a plot that looks like this:
 
 <img src="q7.png" width=500>
 
-The bars are sorted by the number of applications in each county (for
-example, most applications are in Milwaukee, Waukesha is second most,
+The bars are sorted by the average loan amount in each county (for
+example, applications having the highest average loan amount are from Sawyer, Door is second most,
 etc).
 
-#### Q8: when computing a MEAN aggregate per group of loans, under what situation (when) do we require network I/O between the `partial_mean` and `mean` operations?
+#### Q8: When computing a MEAN aggregate per group of loans, under what situation (when) do we require network I/O between the `partial_mean` and `mean` operations?
 
 Write some simple `GROUP BY` queries on `loans` and call `.explain()`.
 Try grouping by the `county_code`. Then try grouping by the `lei`
@@ -364,7 +374,13 @@ If a network transfer (network I/O) is necessary for one query but not the other
 write a comment explaining why.  You might want to look back at how
 you loaded the data to a Hive table earlier.
 
-Write your answer as a Python comment.
+Write your answer in a cell like the following.
+
+```python
+#q8
+# .. your ..
+# .. answers ..
+```
 
 ## Part 4: Machine Learning
 
@@ -395,32 +411,50 @@ Cache the `train` DataFrame.
 #### Q9. How many loans are approved (`approval = 1`) in the `train` DataFrame?
 Answer with a single number.
 
-#### Q10. What is the accuracy of the decision tree classifier of depth 5 on the test dataset?
+#### Q10. What is the accuracy of the random forest classifier with 10 trees on the test dataset?
 
 You'll need to train a decision tree first.  Start with some imports:
 
 ```python
 from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.ml.classification import RandomForestClassifier
 ```
 
 Use the VectorAssembler to combine the feature columns `loan_amount`,
 `income`, `interest_rate` into a single column.
 
-Train a `DecisionTreeClassifier` of max depth 5 (and default arguments
+Train a `RandomForestClassifier` with 10 trees (and default arguments
 for other parameters) on your training data to predict `approved`
-based on the features.
+based on the features. More about `RandomForestClassifier` is [here](https://spark.apache.org/docs/latest/ml-classification-regression.html#random-forest-classifier).
 
 Use the model to make predictions on the test data.  What is the
 *accuracy* (fraction of times the model is correct)?
 
 ## Submission
 
-Be sure to include a comment at the top of notebook with your name (or both names if you worked as partners).
-
-We should be able to run the following on your submission to directly create the mini cluster:
+The structure of the required files for your submissions are as following:
 
 ```
+project-5-<your_team_name>
+|--- boss.Dockerfile
+|--- worker.Dockerfile
+|--- nb
+     |--- p5.ipynb
+```
+
+While grading, we will copy the other files (e.g. `docker-compose.yml`) at appropriate locations.
+
+We should be able to run the following commands on your submission to directly create the mini cluster:
+
+```
+# builds
+docker build . -f p5-base.Dockerfile -t p5-base
+docker build . -f notebook.Dockerfile -t p5-nb
+docker build . -f namenode.Dockerfile -t p5-nn
+docker build . -f datanode.Dockerfile -t p5-dn
+docker build . -f boss.Dockerfile -t p5-boss
+docker build . -f worker.Dockerfile -t p5-worker
+# runs the cluster
 docker compose up -d
 ```
 
@@ -429,19 +463,11 @@ notebook, and run it.
 
 ## Testing
 
-
-After copying `../tester.py`, `../nbutils.py`, and `autograde.py` to
-your repository (where your `nb/` directory is located), you can check
+`tester.py`, `nbutils.py`, and `autograde.py` should already be on your repository. You can check
 your notebook answers with this command:
 
-```sh
+```bash
 python3 autograde.py
 ```
 
-For the autograder to work, for each question, please include a line of comment at the beginning of code cell that outputs the answer. For example, the code cell for question 7 should look like
-```python
-#q7
-...
-```
-
-Of course, the checker only looks at the answers, not how you got them, so there may be further deductions (especially in the case of hardcoding answers). Moreover, Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)!
+<!-- Of course, the checker only looks at the answers, not how you got them, so there may be further deductions (especially in the case of hardcoding answers). Moreover, Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)! -->
