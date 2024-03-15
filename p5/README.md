@@ -21,7 +21,7 @@ Learning objectives:
 * use Spark's RDD, DataFrame, and SQL interfaces to answer question about data
 * load data into Hive for querying with Spark
 * optimize queries with bucketing and caching
-* train a Decision Tree model
+* train a Random Forest model
 
 Before starting, please revisit the [general project directions](../projects.md).
 
