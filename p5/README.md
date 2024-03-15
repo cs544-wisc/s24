@@ -39,7 +39,7 @@ Click the GitHub classroom link and initiate your repository for this project. N
 
 #### Cleanup Docker
 
-Due to storage constraints in your VM, you should remove any previous docker images, containers and networks. To stop any running containers, run `docker stop ${docker ps -aq}`. Then, you should run `docker system prune -af` to remove all the stopped containers, related docker images and networks. 
+Due to storage constraints in your VM, you should remove any previous docker images, containers and networks. To stop any running containers, run `docker stop $(docker ps -aq)`. Then, you should run `docker system prune -af` to remove all the stopped containers, related docker images and networks. 
 
 You may repeat these steps to clean up the storage if your disk becomes full.
 
