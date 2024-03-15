@@ -463,11 +463,30 @@ notebook, and run it.
 
 ## Testing
 
-`tester.py`, `nbutils.py`, and `autograde.py` should already be on your repository. You can check
-your notebook answers with this command:
+`tester.py`, `nbutils.py`, and `autograde.py` should already be on your repository. 
+
+### Partial Test
+
+Full test will remove your docker containers and run your notebook on a different docker cluster. If this hinders your developer experience, you can choose to check the answers only. 
+
+The following command will keep your cluster running. It will only check the answers of your `nb/p5.ipynb` notebook.
+
+```bash
+python3 autograde.py -s
+```
+
+### Full Test
+
+We recommend running the full test once you have completed all the answers.
 
 ```bash
 python3 autograde.py
 ```
+
+Note that, while grading, we will run the full test.
+
+### Manual Grading
+
+Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)!
 
 <!-- Of course, the checker only looks at the answers, not how you got them, so there may be further deductions (especially in the case of hardcoding answers). Moreover, Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)! -->
