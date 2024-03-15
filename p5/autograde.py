@@ -1,16 +1,24 @@
 import subprocess, time, os, argparse
 import json, re # parsing JSON and regular expressions
 
-from tester import init, test, tester_main, cleanup, warn, verbose, run_with_timeout
+from tester import init, test, tester_main, cleanup, error, warn, verbose, run_with_timeout, get_args
 import nbutils
 
+import argparse
+
+answer_only = False
 ANSWERS = {} # global variable to store answers { key = question number, value = output of the answer cell }
 
 @cleanup
 def docker_cleanup():
+    args = get_args()
+    if args.skip_run:
+        return
+    
     try:
         subprocess.run(["docker compose kill; docker compose rm -f"], shell=True)
         subprocess.run(["docker", "rmi", "-f", "p5-base", "p5-nb", "p5-nn", "p5-dn", "p5-boss", "p5-worker"], check=True, shell=False)
+        subprocess.run(["docker", "system", "prune", "-f"], check=True, shell=False)
 
         # remove any other running container in case 
         result = subprocess.run(["docker", "container", "ls", "-a"], capture_output = True, check=True, shell=False)
@@ -24,6 +32,10 @@ def docker_cleanup():
 
 
 def docker_startup():
+    args = get_args()
+    if args.skip_run:
+        return
+    
     print("================================== building docker images ==================================")
     subprocess.run(["docker", "build", ".", "-f", "p5-base.Dockerfile", "-t", "p5-base"])
     subprocess.run(["docker", "build", ".", "-f", "notebook.Dockerfile", "-t", "p5-nb"])
@@ -59,23 +71,27 @@ def run_notebook():
     subprocess.run(["docker", "exec", "notebook", "sh", "-c", run_notebook_cmd])
 
 
-def collect_cells():
+def collect_cells(tester_nb='nb/tester-p5.ipynb'):
     global ANSWERS
-    tester_nb = "nb/tester-p5.ipynb"
     if os.path.exists(tester_nb):
         ANSWERS = nbutils.collect_answers(tester_nb)
 
 
 @init
 def init():
-    def wrapper():
-        docker_cleanup()
-        docker_startup()
-        run_notebook()
-    err = run_with_timeout(wrapper, 120)
-    if err:
-        return err
-    collect_cells()
+    args = get_args()
+    if args.skip_run:
+        collect_cells('nb/p5.ipynb')
+    else:
+        check_system_health()
+        def wrapper():
+            docker_cleanup()
+            docker_startup()
+            run_notebook()
+        err = run_with_timeout(wrapper, 1200)
+        if err:
+            return err
+        collect_cells()
 
 
 @test(points=10)
@@ -111,7 +127,6 @@ def q4():
     if not 4 in ANSWERS:
         raise Exception("Answer to question 4 not found")
     outputs = ANSWERS[4]
-    # print("ANSWERS[4] = ", ANSWERS[4])
     output = nbutils.parse_dict_bool_output(outputs)
     
     if not nbutils.compare_dict_bools(
@@ -156,7 +171,7 @@ def q7():
         raise Exception("Answer to question 7 not found")
     outputs = ANSWERS[7]
     # print("ANSWERS[7] = ", ANSWERS[7])
-    output = nbutils.parse_dict_float_output(outputs)
+    output = nbutils.parse_dict_int_output(outputs)
     
     if not nbutils.compare_dict_ints(
     {
@@ -198,7 +213,40 @@ def q10():
     output = nbutils.parse_float_output(outputs)
     if not nbutils.is_accurate(0.89, output):
         return "Wrong answer"
+    
+def check_system_health():
+    try:
+        # swap
+        output = subprocess.check_output(['free', '-m']).decode('utf-8')
+        lines = output.split('\n')
+        swap_line = lines[2]
+        swap_info = swap_line.split()
+        total, used, free = int(swap_info[1]), int(swap_info[2]), int(swap_info[3])
+        if total < 1000:
+            error(f"Swap size ({total} MB) is much less than 1GB")
+            raise Exception("Swap size is less than recommended")
+        
+        # disk
+        output = subprocess.check_output(['df', '-h', '/']).decode('utf-8')
+        usage_line = output.split('\n')[1]
+        disk_usage = int(usage_line.split()[4][:-1])
+        if disk_usage > 70:
+            warn(f"Disk usage is {disk_usage}%")
+            warn("If autograder fails, consider cleaning docker system storage")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    tester_main(parser, ["nb/p5.ipynb"])
+    parser.add_argument('-s', '--skip-run', action='store_true', help='Check answer without running the system')
+    tester_main(parser, required_files=[
+        "nb/p5.ipynb", 
+        "boss.Dockerfile",
+        "worker.Dockerfile",
+        "namenode.Dockerfile",
+        "datanode.Dockerfile",
+        "notebook.Dockerfile",
+        "p5-base.Dockerfile",
+        "docker-compose.yml",
+    ])
