@@ -11,14 +11,14 @@ these against other tables or views to determine the meaning of these
 IDs.  In addition, you'll practice training a Decision Tree model to
 predict loan approval.
 
-**Important:** you'll answer 10 questions in P5.  Write
+**Important:** You'll answer ten questions in P5.  Write
   each question and it's number (e.g., "#q1: ...") as a comment in your
-  notebook prior to each answer so we can easily search your notebook
+  notebook before each answer so we can easily search your notebook
   and give you credit for your answers.
 
 Learning objectives:
 
-* use Spark's RDD, DataFrame, and SQL interfaces to answer question about data
+* use Spark's RDD, DataFrame, and SQL interfaces to answer questions about data
 * load data into Hive for querying with Spark
 * optimize queries with bucketing and caching
 * train a Random Forest model
@@ -33,7 +33,7 @@ None
 
 ### Development Environment
 
-Click the Github classroom link and initiate your repository for this project. Now, clone the project repository on your VM. Your clone repository should have a `setup.sh` file inside. Run `./setup.sh` to download all the relevant files for this project. Note that, you may have to run the `setup.sh` again to update the files if there are any changes.
+Click the GitHub classroom link and initiate your repository for this project. Now, clone the project repository on your VM. Your clone repository should have a `setup.sh` file inside. Run `./setup.sh` to download all the relevant files for this project. Note that, you may have to run the `setup.sh` again to update the files if there are any changes.
 
 ### Virtual Machine
 
@@ -41,16 +41,16 @@ Click the Github classroom link and initiate your repository for this project. N
 
 Due to storage constraints in your VM, you should remove any previous docker images, containers and networks. To stop any running containers, run `docker stop ${docker ps -aq}`. Then, you should run `docker system prune -af` to remove all the stopped containers, related docker images and networks. 
 
-You may do these steps again to cleanup the storage if your disk becomes full.
+You may repeat these steps to clean up the storage if your disk becomes full.
 
 #### Increase Swap Space
 
-~4 GB is barely enough for P5. Brefore you start, take a moment to enable a 1
-GB swap file to supplement.  A swap file is on storage, but acts
+~4 GB is barely enough for P5. Before you start, take a moment to enable a 1
+GB swap file to supplement.  A swap file is on storage but acts
 as extra memory. This has performance implications as storage is
-much slower than RAM (as what we have studied in class).  
+much slower than RAM (as we have studied in class).  
 
-Run the following commands in your Google Cloud VM to increase the size of swap to **1 GB**. You can optionally go through this [blog](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04) to know the detail.
+Run the following commands in your Google Cloud VM to increase the size of the swap to **1 GB**. You can optionally go through this [blog](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04) to know the details.
 ```
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
@@ -64,7 +64,7 @@ Now, you should check if the swap space has actually been increased. Run the com
 
 ### Containers
 
-For this project, you'll deploy a small cluster of containers. See the table below to understand the docker images we need and how many containers will be created. You should read the [`docker-compose.yml`](./docker-compose.yml) file to understand better.
+For this project, you'll deploy a small cluster of containers. Take a look at the table below to understand the docker images we need and how many containers will be created. You should read the [`docker-compose.yml`](./docker-compose.yml) file to understand better.
 
 | Image Name     | Purpose        | Container Count | Dockerfile            |
 | -------------- | -------------- | --------------- | --------------------- |
@@ -101,7 +101,7 @@ docker build . -f boss.Dockerfile -t p5-boss
 docker build . -f worker.Dockerfile -t p5-worker
 ```
 
-Be patient as it takes a while to build all of these. To check, run `docker images`. You should be able to see the names of these six images.
+Be patient, as it takes a while to build all of these. To check, run `docker images`. You should be able to see the names of these six images.
 
 #### Start the Cluster
 
@@ -188,19 +188,19 @@ RDD you need for this question.
 Use a `filter` transformation (that takes a Python lambda) with a
 `count` action to get the answer.
 
-As an practice, you could run this:
+As a practice, you could run this:
 
 ```python
 rows = df.rdd.take(3)
 ```
 
-The try to extract the name from one of the rows with a little Python
+They try to extract the name from one of the rows with a little Python
 code.  This will help you determine how to write your lambda (which
 will take a `Row` and return a boolean).
 
-Use the some format as previous projects for all your notebook answers
-(last line of a cell contains an expression giving the answer, and the
-cell starts with a "#q1" comment, or similar).
+Use the same format as previous projects for all your notebook answers
+(the last line of a cell contains an expression giving the answer, and the
+the cell starts with a "#q1" comment, or similar).
 
 #### Q2: Same as Q1. This time, use a **DataFrame** (instead of RDD) to answer.
 
@@ -216,7 +216,7 @@ the same syntax as a condition in SQL, so these resources may help:
 
 #### Q3: Same as Q1. This time, use **Spark SQL** (instead of RDD) to answer.
 
-To write a SQL query to answer this, we first need to load into a Hive
+To write a SQL query to answer this, we first need to load it into a Hive
 table.  You can do so with this:
 
 ```python
@@ -228,7 +228,7 @@ the answer.  This call will return the results as a Spark DataFrame --
 you'll need to do a little extra Python work to get this out as a
 single int for your answer.
 
-Answers of Q1, Q2 and Q3 should be the same.
+Answers to Q1, Q2 and Q3 should be the same.
 
 ## Part 2: Hive Data Warehouse
 
@@ -332,9 +332,9 @@ For this, have a cell in your notebook that looks like the following:
 
 Let's break it down into two parts. 
 * Think about the ten counties where *Wells Fargo* applications have the highest average loan amount. 
-* Now, that you have the name of those counties, how many applications have been made form those counties to *Wells Fargo*.
+* Now, that you have the names of those counties, how many applications have been made from those counties to *Wells Fargo*.
 
-**Information:** `county_code` in `loans` is the state and county codes concatenated together whereas `counties` has these as separate columns (as an example, 55025 is the county_code for Dane county in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
+**Information:** `county_code` in `loans` is the state and county codes concatenated together whereas `counties` have these as separate columns (as an example, 55025 is the county_code for Dane County in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
 ```python
 ...
 ON loans.county_code = counties.STATE*1000 + counties.COUNTY
@@ -386,15 +386,15 @@ Write your answer in a cell like the following.
 
 The objective of Part 4 is to use the given loan dataset to train a
 Decision Tree model that can predict outcomes of loan applications
-(approved or not). Recall that a loan is approve if `action_taken` is
+(approved or not). Recall that a loan is approved if `action_taken` is
 "Loan originated".
 
-We call our label `approval`, indicating the whether of a loan
+We call our label `approval`, indicating whether a loan
 application is approved or not (`1` for approved, `0` otherwise). And
 for this exercise, we will use the features `loan_amount`, `income`,
 `interest_rate` in `loans` table for prediction.
 
-First, as a prepartory step, get the features and label from the loans
+First, as a preparatory step, get the features and label from the loans
 table into a new dataframe `df`. Cast the `approval`, `income` and `interest_rate`
 columns to `double` type and fill missing values of all features and label columns
 by 0.0.
@@ -432,7 +432,7 @@ Use the model to make predictions on the test data.  What is the
 
 ## Submission
 
-The structure of the required files for your submissions are as following:
+The structure of the required files for your submissions are as follows:
 
 ```
 project-5-<your_team_name>
