@@ -6,7 +6,6 @@ import nbutils
 
 import argparse
 
-answer_only = False
 ANSWERS = {} # global variable to store answers { key = question number, value = output of the answer cell }
 
 @cleanup
