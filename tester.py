@@ -28,6 +28,29 @@ INIT = None
 TESTS = OrderedDict()
 CLEANUP = None
 
+def verbose(msg):
+    if VERBOSE:
+        print(msg)
+
+def run_with_timeout(func, timeout):
+    def wrapper(ret):
+        try:
+            func()
+            result = None
+        except Exception as e:
+            result = traceback.format_exception(e)
+        ret.send(result)
+
+    ret_send, ret_recv = multiprocessing.Pipe()
+    proc = multiprocessing.Process(target=wrapper, args=(ret_send,))
+    proc.start()
+    proc.join(timeout)
+    if proc.is_alive():
+        proc.terminate()
+        result = "Timeout"
+    else:
+        result = ret_recv.recv()
+    return result
 
 # dataclass for storing test object info
 class _unit_test:
@@ -74,13 +97,6 @@ def test(points, timeout=None, desc=""):
         TESTS[test_func.__name__] = _unit_test(test_func, points, timeout, desc)
 
     return wrapper
-
-
-# debug dir decorator
-def debug(debug_func):
-    global DEBUG
-    DEBUG = debug_func
-    return debug_func
 
 
 # cleanup decorator
@@ -211,7 +227,12 @@ def tester_main(parser, required_files=[]):
 
     # run init
     if INIT:
-        INIT()
+        ret = INIT()
+        if ret != None:
+            result = f"Init failed: {ret}"
+            error(result)
+            save_results(result)
+            exit(-1)
 
     # run tests
     results = run_tests()
@@ -219,4 +240,8 @@ def tester_main(parser, required_files=[]):
 
     # run cleanup
     if CLEANUP:
-        CLEANUP()
+        ret = CLEANUP()
+        if ret != None:
+            result = f"Cleanup failed: {ret}"
+            error(result)
+            exit(-1)

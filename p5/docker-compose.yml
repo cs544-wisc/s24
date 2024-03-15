@@ -1,6 +1,7 @@
 services:
     nb:
         image: p5-nb
+        container_name: notebook
         ports:
             - "127.0.0.1:5000:5000"
             - "127.0.0.1:4040:4040"
