@@ -2,7 +2,7 @@
 
 # P5 (6% of grade): Spark, Loan Applications
 
-## Overview
+## :telescope: Overview
 
 In P5, we'll use Spark to analyze loan applications in WI.  You'll
 load your data to Hive tables and views so you can easily query them.
@@ -25,11 +25,11 @@ Learning objectives:
 
 Before starting, please revisit the [general project directions](../projects.md).
 
-## Corrections/Clarifications
+## :pushpin: Corrections/Clarifications
 None
 
 
-## Cluster Setup
+## :hammer_and_wrench: Cluster Setup
 
 ### Development Environment
 
@@ -112,7 +112,7 @@ are still running. You can run `docker ps` to check if there are **six** contain
 If some are starting up and then exiting, troubleshoot
 the reason before proceeding further.
 
-## Data Setup
+## :dvd: Data Setup
 
 <!-- ### Virtual Machine
 
@@ -157,7 +157,7 @@ Run the following shell command in a notebook cell to upload the CSVs from the l
 hdfs dfs -D dfs.replication=1 -cp -f data/*.csv hdfs://nn:9000/
 ```
 
-## Part 1: Filtering: RDDs, DataFrames, and Spark
+## :bank: Part 1: Filtering: RDDs, DataFrames, and Spark
 
 Inside your `p5.ipynb` notebook, create a Spark session (note we're enabling
 Hive on HDFS):
@@ -230,7 +230,7 @@ single int for your answer.
 
 Answers to Q1, Q2 and Q3 should be the same.
 
-## Part 2: Hive Data Warehouse
+## :post_office: Part 2: Hive Data Warehouse
 
 #### `loans` table
 
@@ -326,7 +326,7 @@ For this, have a cell in your notebook that looks like the following:
 # .. answers ..
 ```
 
-## Part 3: Grouping Rows
+## :basket: Part 3: Grouping Rows
 
 #### Q7: What are the application counts for Wells Fargo applications for the ten counties where Wells Fargo applications have the highest average loan amount?
 
@@ -382,7 +382,7 @@ Write your answer in a cell like the following.
 # .. answers ..
 ```
 
-## Part 4: Machine Learning
+## :robot: Part 4: Machine Learning
 
 The objective of Part 4 is to use the given loan dataset to train a
 Decision Tree model that can predict outcomes of loan applications
@@ -430,7 +430,7 @@ based on the features. More about `RandomForestClassifier` is [here](https://spa
 Use the model to make predictions on the test data.  What is the
 *accuracy* (fraction of times the model is correct)?
 
-## Submission
+## :outbox_tray: Submission
 
 The structure of the required files for your submissions are as follows:
 
@@ -461,7 +461,7 @@ docker compose up -d
 We should then be able to open `http://localhost:5000/lab`, find your
 notebook, and run it.
 
-## Testing
+## :trophy: Testing
 
 `tester.py`, `nbutils.py`, and `autograde.py` should already be on your repository. 
 
