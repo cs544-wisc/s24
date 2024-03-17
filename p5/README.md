@@ -8,7 +8,7 @@ In P5, we'll use Spark to analyze loan applications in WI.  You'll
 load your data to Hive tables and views so you can easily query them.
 The big table (loans) has many IDs in columns; you'll need to join
 these against other tables or views to determine the meaning of these
-IDs.  In addition, you'll practice training a Decision Tree model to
+IDs.  In addition, you'll practice training a Random Forest model to
 predict loan approval.
 
 **Important:** You'll answer ten questions in P5.  Write
