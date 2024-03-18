@@ -98,6 +98,11 @@ def test(points, timeout=None, desc=""):
 
     return wrapper
 
+# debug dir decorator
+def debug(debug_func):
+    global DEBUG
+    DEBUG = debug_func
+    return debug_func
 
 # cleanup decorator
 def cleanup(cleanup_func):
