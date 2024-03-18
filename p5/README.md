@@ -1,6 +1,6 @@
-# DRAFT!  Don't start yet.
-
 # P5 (6% of grade): Spark, Loan Applications
+
+GitHub Classroom Link: https://classroom.github.com/a/rwM5u5TJ
 
 ## :telescope: Overview
 
