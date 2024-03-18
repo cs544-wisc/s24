@@ -316,7 +316,7 @@ question.  `lei` in `loans` lets you identify the bank.  Filter on
 Show the output, then write comments (which we will manually grade) explaining the following:
 
 1. Which table is sent to every executor via a `BroadcastExchange` operation?
-2. Does the plan involve `HashAggregate`s (depending on how you write the query, it may or may not)?  If so, which ones?
+2. Does the plan involve `HashAggregate`s (depending on how you write the query, it may or may not)?  If so, which ones? And, if not, why?
 
 For this, have a cell in your notebook that looks like the following:
 
