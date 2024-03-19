@@ -432,7 +432,7 @@ Use the model to make predictions on the test data.  What is the
 
 ## :outbox_tray: Submission
 
-The structure of the required files for your submissions are as follows:
+The structure of the required files for your submissions is as follows:
 
 ```
 project-5-<your_team_name>
@@ -460,6 +460,8 @@ docker compose up -d
 
 We should then be able to open `http://localhost:5000/lab`, find your
 notebook, and run it.
+
+If you have mistakenly added large files to the local repository and cannot push, read the fix [here](../docs/fix-too-large-file-git/README.md).
 
 ## :trophy: Testing
 
