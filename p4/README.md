@@ -29,14 +29,16 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
+## Step 0: GIT Preparations
+
+While Git is very helpful for keeping track of code changes, the reality is that most directories contain files that we don't want to track (such as large csv files in the case of most 544 projects). Git allows us to intentionally ignore certain files via including a `.gitignore` file. When you include a file in the `.gitignore`, git will not track changes to it. .`gitignore` files also support a limited set of [regex](https://ubuntu.com/blog/regex-basics) characters, enabling us to disabling the tracking of entire types of files. There are plenty of language specfic `.gitignore` templates available  that you can use as a starting point (for example, here is the [Python `.gitignore`](https://github.com/github/gitignore/blob/main/Python.gitignore) that Github provides). In our case, it is pertinent to tell git to ignore csv files. To do so, you should add the following lines to your `.gitignore` file: `*.csv`. and `*.csv.[0-9]*` 
+
+
 ## Part 1: Deployment and Data Upload
 
 
-Before you begin, please run the below command and the `setup.sh` file in your p4 directory. This will download needed files and stop git from trying to track CSV files which will save you a lot of headaches (This step will not be graded - it is just to help you). 
+Before you begin, please run  the `setup.sh` file in your p4 directory. This will download needed files and save you the effort of manually copying over project files.
 
-```
-echo "*.csv" >> .gitignore
-```
 #### Cluster
 
 For this project, you'll deploy a small cluster of containers, one
