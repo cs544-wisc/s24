@@ -25,6 +25,8 @@ Learning objectives:
 
 Before starting, please revisit the [general project directions](../projects.md).
 
+Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look before you reach out to the staff. 
+
 ## :pushpin: Corrections/Clarifications
 None
 
