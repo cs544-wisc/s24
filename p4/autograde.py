@@ -327,7 +327,7 @@ def q7():
 def q8():
     check_has_answer(8)
     if not "Live datanodes (1):" in ANSWERS[8]:
-        return "Output does not indicate 2 live datanodes"
+        return "Output does not indicate 1 live datanodes"
 
 @test(points=10)
 def q9():
