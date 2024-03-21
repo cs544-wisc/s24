@@ -4,6 +4,14 @@
 
 It will be available once you accept the classroom invitation link for P5. After you have created a team, you will get a repository. Clone the repository in your VM. `setup.sh` will be there.
 
+## Spark master and/or worker containers start, but they die after some time
+
+Note that `start-master.sh` initiates the master in the background. 
+
+> If the script starts the process in the background or if the process terminates for some reason, the container will stop since Docker containers are designed to stop when their main process exits.
+
+To keep a container running, you have to start a foreground process using CMD. The same goes for `start-worker.sh`. Go over the lectures on this.
+
 ## Spark queries are too slow
 
 Most probably, the swap has not been increased.
