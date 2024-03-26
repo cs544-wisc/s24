@@ -29,7 +29,8 @@ Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look befor
 
 ## :pushpin: Corrections/Clarifications
 
-1. **[Mar 26, 2024:]** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+1. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+2. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct. 
 
 
 ## :hammer_and_wrench: Cluster Setup
