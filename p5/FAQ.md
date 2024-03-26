@@ -56,9 +56,10 @@ if the values are the same, then you are okay.
 
 ## Q9 - Count is close but not equal
 This could be due to the following issues:
-1. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
-2. Some rows mistakenly got deleted while handling missing values.
-3. There is an error in counting how many loans are approved.
+1. The order of the columns is not as we intended. Check if the columns are in this order, `"loan_amount", "income", "interest_rate", "approval"` before splitting the data into train-test.
+2. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
+3. Some rows mistakenly got deleted while handling missing values.
+4. There is an error in counting how many loans are approved.
 
 
 ## Q10 - Accuracy is too high/low

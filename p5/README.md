@@ -29,7 +29,8 @@ Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look befor
 
 ## :pushpin: Corrections/Clarifications
 
-1. **[Mar 26, 2024:]** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+1. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+2. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct. 
 
 
 ## :hammer_and_wrench: Cluster Setup
@@ -401,6 +402,8 @@ First, as a preparatory step, get the features and label from the loans
 table into a new dataframe `df`. Cast the `approval`, `income` and `interest_rate`
 columns to `double` type and fill missing values of all features and label columns
 by 0.0.
+
+**Important:** To make the results reproducible, we emphasize keeping the order of columns as follows: `"loan_amount", "income", "interest_rate", "approval".`
 
 Then split `df` as follows:
 
