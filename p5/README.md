@@ -402,6 +402,8 @@ table into a new dataframe `df`. Cast the `approval`, `income` and `interest_rat
 columns to `double` type and fill missing values of all features and label columns
 by 0.0.
 
+**Important:** To make the results reproducable, we suggest to keep the order of columns are as follows: `"loan_amount", "income", "interest_rate", "approval"`.
+
 Then split `df` as follows:
 
 ```python
