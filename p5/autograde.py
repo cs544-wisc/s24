@@ -171,9 +171,8 @@ def q7():
     outputs = ANSWERS[7]
     # print("ANSWERS[7] = ", ANSWERS[7])
     output = nbutils.parse_dict_int_output(outputs)
-    
-    if not nbutils.compare_dict_ints(
-    {
+
+    answer_with_duplicates = {
         'Sawyer': 38,
         'Door': 174,
         'Forest': 7,
@@ -184,7 +183,26 @@ def q7():
         'Dane': 729,
         'Oneida': 70,
         'Florence': 8
-    }, output):
+    }
+
+    answer_with_uniques = {
+        'Sawyer': 38,
+        'Door': 87,
+        'Forest': 7,
+        'Ozaukee': 389,
+        'Bayfield': 33,
+        'Waukesha': 1832,
+        'Vilas': 68,
+        'Dane': 729,
+        'Oneida': 70,
+        'Florence': 8
+    }
+    
+    if nbutils.compare_dict_ints(answer_with_duplicates, output):
+        pass
+    elif nbutils.compare_dict_ints(answer_with_uniques, output):
+        pass
+    else:
         return "Wrong answer"
         
 
