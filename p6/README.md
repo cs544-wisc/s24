@@ -158,7 +158,7 @@ your notebook so you can loop over them, and do an `INSERT` into your
 If you did this correctly, then running the query `SELECT COUNT(*) FROM weather.stations`
 should produce "1313" as the output.
 
-#### Q2: what is the name corresponding to station ID `USW00014837`?
+#### Q2: what is the name corresponding to station ID `US1WIMR0003`?
 
 Write a Cassandra query to obtain the answer.
 

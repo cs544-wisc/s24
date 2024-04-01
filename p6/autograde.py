@@ -319,7 +319,7 @@ def q2():
         return cell
     output = extract_txt_from_cell(cell)
 
-    expected_txt = "madison dane co rgnl ap"
+    expected_txt = "amberg 1.3 sw"
     if expected_txt not in output:
         return f"couldn't find txt {expected_txt} in output {output}"
     return None
