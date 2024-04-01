@@ -29,8 +29,9 @@ Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look befor
 
 ## :pushpin: Corrections/Clarifications
 
-1. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
-2. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct. 
+1. **[Apr 01, 2024]:** Added clarifications in `q7`. This will not affect any correct answers.
+2. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+3. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct.
 
 
 ## :hammer_and_wrench: Cluster Setup
@@ -335,7 +336,7 @@ For this, have a cell in your notebook that looks like the following:
 #### Q7: What are the application counts for Wells Fargo applications for the ten counties where Wells Fargo applications have the highest average loan amount?
 
 Let's break it down into two parts. 
-* Think about the ten counties where *Wells Fargo* applications have the highest average loan amount. 
+* Out of all the applications made to *Wells Fargo*, find the names of the top ten counties of those applications in terms of the average loan amount.
 * Now, that you have the names of those counties, how many applications have been made from those counties to *Wells Fargo*.
 
 **Information:** `county_code` in `loans` is the state and county codes concatenated together whereas `counties` have these as separate columns (as an example, 55025 is the county_code for Dane County in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
@@ -344,6 +345,8 @@ Let's break it down into two parts.
 ON loans.county_code = counties.STATE*1000 + counties.COUNTY
 ...
 ```
+
+Also, by Wells Fargo applications, we mean loan applications made to any bank with "Wells Fargo" in its name.
 
 Answer Q7 with a Python `dict` that looks like this:
 
