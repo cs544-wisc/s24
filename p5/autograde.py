@@ -157,7 +157,7 @@ def q5():
     if not nbutils.compare_int(6, output):
         return "Wrong answer"
 
-@test(points=10)
+@test(points=0)
 def q6():
     if not 6 in ANSWERS:
         raise Exception("Answer to question 6 not found")
@@ -206,7 +206,7 @@ def q7():
         return "Wrong answer"
         
 
-@test(points=10)
+@test(points=0)
 def q8():
     if not 8 in ANSWERS:
         raise Exception("Answer to question 8 not found")
