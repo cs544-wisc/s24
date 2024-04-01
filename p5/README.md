@@ -29,9 +29,10 @@ Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look befor
 
 ## :pushpin: Corrections/Clarifications
 
-1. **[Apr 01, 2024]:** Added clarifications in `q7`. This will not affect any correct answers.
-2. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
-3. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct.
+1. **[Apr 01, 2024]:** Updated `autograder.py` to remove manual grading points from `q6` and `q8`. The total autograde score is **80** now instead of 100. This will not affect any correct submission.
+2. **[Apr 01, 2024]:** Added clarifications in `q7`. This will not affect any correct answers.
+3. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+4. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct.
 
 
 ## :hammer_and_wrench: Cluster Setup
@@ -498,6 +499,17 @@ Note that, while grading, we will run the full test.
 
 ### Manual Grading
 
-Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)!
+Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS (0/0)`).
+
+### Point Breakdown
+
+Breakdown of total 100 points is as follows:
+
+* Autograde (80 points)
+* Manual Grade (20 points)
+     * Q6 (10 points)
+     * Q8 (10 points)
+
+
 
 <!-- Of course, the checker only looks at the answers, not how you got them, so there may be further deductions (especially in the case of hardcoding answers). Moreover, Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)! -->
