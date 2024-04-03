@@ -55,11 +55,33 @@ No.
 if the values are the same, then you are okay.
 
 ## Q9 - Count is close but not equal
+
 This could be due to the following issues:
 1. The order of the columns is not as we intended. Check if the columns are in this order, `"loan_amount", "income", "interest_rate", "approval"` before splitting the data into train-test.
-2. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
-3. Some rows mistakenly got deleted while handling missing values.
-4. There is an error in counting how many loans are approved.
+2. The `approval` column is not binary, which is contratry to what we intended. Before splitting, the `approval` column must have only 0s and 1s.
+3. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
+4. Some rows mistakenly got deleted while handling missing values.
+5. There is an error in counting how many loans are approved.
+
+
+Also, the first few columns of data should look like this before splitting. You can find this by running `df.show()`
+
+```
++-------------+--------+---------------+----------+
+| loan_amount | income | interest_rate | approval |
++-------------+--------+---------------+----------+
+|   255000.0  |  210.0 |     0.000     |    1     |
+|   435000.0  |   0.0  |     3.125     |    0     |
+|   435000.0  |  190.0 |     0.000     |    1     |
+|   165000.0  |   0.0  |     3.250     |    0     |
+|   205000.0  |   0.0  |     0.000     |    1     |
+|   305000.0  |   0.0  |     3.500     |    0     |
+|   195000.0  |   43.0 |     2.750     |    1     |
+|   185000.0  |   0.0  |     3.500     |    0     |
+|   265000.0  |   93.0 |     2.750     |    1     |
+|   185000.0  |   0.0  |     3.250     |    0     |
++-------------+--------+---------------+----------+
+```
 
 
 ## Q10 - Accuracy is too high/low
