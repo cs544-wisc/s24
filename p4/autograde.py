@@ -241,15 +241,15 @@ def diagnostic_checks():
     
     
 
-@debug
-def create_debug_dir():
-    file_dir = os.path.abspath(__file__)
-    tester_dir = os.path.dirname(file_dir)
-    print("tester_dir: ", file_dir)
+# @debug
+# def create_debug_dir():
+#     file_dir = os.path.abspath(__file__)
+#     tester_dir = os.path.dirname(file_dir)
+#     print("tester_dir: ", file_dir)
     
-    target = f"{tester_dir}/notebooks_from_test/"
-    print("target: ", target)
-    check_output(f"mkdir -p {target}&& cp nb/tester-p4a.ipynb {target} && cp nb/tester-p4b.ipynb {target}", shell=True)
+#     target = f"{tester_dir}/notebooks_from_test/"
+#     print("target: ", target)
+#     check_output(f"mkdir -p {target}&& cp nb/tester-p4a.ipynb {target} && cp nb/tester-p4b.ipynb {target}", shell=True)
 
 @init
 def init(verbose = False, *args, **kwargs):
