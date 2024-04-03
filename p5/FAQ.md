@@ -64,5 +64,25 @@ This could be due to the following issues:
 5. There is an error in counting how many loans are approved.
 
 
+Also, the first few columns of data should look like this before splitting. You can find this by running `df.show()`
+
+```
++-------------+--------+---------------+----------+
+| loan_amount | income | interest_rate | approval |
++-------------+--------+---------------+----------+
+|   255000.0  |  210.0 |     0.000     |    1     |
+|   435000.0  |   0.0  |     3.125     |    0     |
+|   435000.0  |  190.0 |     0.000     |    1     |
+|   165000.0  |   0.0  |     3.250     |    0     |
+|   205000.0  |   0.0  |     0.000     |    1     |
+|   305000.0  |   0.0  |     3.500     |    0     |
+|   195000.0  |   43.0 |     2.750     |    1     |
+|   185000.0  |   0.0  |     3.500     |    0     |
+|   265000.0  |   93.0 |     2.750     |    1     |
+|   185000.0  |   0.0  |     3.250     |    0     |
++-------------+--------+---------------+----------+
+```
+
+
 ## Q10 - Accuracy is too high/low
 Check if Q9 is correct. If it is, check your logic of measuring accuracy. Or, use one of the evaluators of the `pyspark` library. Also, check if you have preprocessed the data correctly. 
