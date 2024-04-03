@@ -58,13 +58,13 @@ if the values are the same, then you are okay.
 
 This could be due to the following issues:
 1. The order of the columns is not as we intended. Check if the columns are in this order, `"loan_amount", "income", "interest_rate", "approval"` before splitting the data into train-test.
-2. The `approval` column is not binary, which is contratry to what we intended. Before splitting, the `approval` column must have only 0s and 1s.
+2. The `approval` column is not binary, which is contrary to what we intended. Before splitting, the `approval` column must have only 0s and 1s.
 3. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
 4. Some rows mistakenly got deleted while handling missing values.
 5. There is an error in counting how many loans are approved.
 
 
-Also, the first few columns of data should look like this before splitting. You can find this by running `df.show()`
+Also, the first few rows of data should look like this before splitting. You can find this by running `df.show()`
 
 ```
 +-------------+--------+---------------+----------+
