@@ -393,7 +393,7 @@ Write your answer in a cell like the following.
 ## :robot: Part 4: Machine Learning
 
 The objective of Part 4 is to use the given loan dataset to train a
-Decision Tree model that can predict outcomes of loan applications
+Random Forest model that can predict outcomes of loan applications
 (approved or not). Recall that a loan is approved if `action_taken` is
 "Loan originated".
 
@@ -423,7 +423,7 @@ Answer with a single number.
 
 #### Q10. What is the accuracy of the random forest classifier with 10 trees on the test dataset?
 
-You'll need to train a decision tree first.  Start with some imports:
+You'll need to train a random forest first.  Start with some imports:
 
 ```python
 from pyspark.ml.feature import VectorAssembler
