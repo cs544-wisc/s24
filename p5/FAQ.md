@@ -60,7 +60,7 @@ This could be due to the following issues:
 1. The order of the columns is not as we intended. Check if the columns are in this order, `"loan_amount", "income", "interest_rate", "approval"` before splitting the data into train-test.
 2. The `approval` column is not binary, which is contrary to what we intended. Before splitting, the `approval` column must have only 0s and 1s.
 3. You are working with loans **dataframe** which has different row order than `loans` table. According to README, "get the features and label from the `loans` **table** into a new dataframe `df`". The loans *table* and the loans *dataframe* are seperate entities. So, initialize `df` from `loans` table using `spark.sql`.
-4. You may have accidentally created a temporary view named `loans`. This will create a new view with a different row order. This will also replace the `loans` table from table namespace. You can check by running `q4` again. Actually, you do not need a `loans` view since you already have `loans` table.
+4. You may have accidentally created a temporary view named `loans`. This will create a new view with a different row order. This will also replace the `loans` table from table namespace. You can check by running `q4` again. Actually, you do not need a `loans` view since you already have `loans` table. You can safely remove the lines responsible for creating loans view.
 3. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
 4. Some rows mistakenly got deleted while handling missing values.
 5. There is an error in counting how many loans are approved.
