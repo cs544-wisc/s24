@@ -1,3 +1,26 @@
+Lecture 27 (Apr 3):
+
+docker build . -t cassandra-demo
+docker exec -it demo-db-1 bash
+
+nodetool status
+nodetool ring
+cqlsh
+cqlsh demo-db-1
+	help 
+	help describe
+	describe keyspaces
+	# below command wouldn't work 
+	create keyspace banking with replication = {'class': 'SimpleStrategy', "replication_factor": 3}; 
+	create keyspace banking with replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
+	describe keyspaces
+	describe tables
+	use banking;
+	describe tables
+
+docker exec -d <CONTAINER> python3 -m jupyterlab --no-browser --ip=0.0.0.0 --port=5000 --allow-root --NotebookApp.token=''
+________________________________________________________________________________
+
 Lecture 21 (Mar 13):
 
 docker build . -t spark-demo
