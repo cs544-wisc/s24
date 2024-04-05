@@ -24,12 +24,14 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
+- Apr 5: fixing URL for setup.sh
+
 ## Cluster Setup
 
 We have provided you with a `setup.sh` which will download and set up all the necessary files for this project. 
 Note that you might need to give `setup.sh` executable permission before running it. You can do this using:
 ```
-wget https://raw.githubusercontent.com/cs544-wisc/f23/main/p6/setup.sh -O setup.sh
+wget https://raw.githubusercontent.com/cs544-wisc/s24/main/p6/setup.sh -O setup.sh
 chmod u+x setup.sh
 ./setup.sh
 ```
