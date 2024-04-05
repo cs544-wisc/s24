@@ -59,6 +59,8 @@ if the values are the same, then you are okay.
 This could be due to the following issues:
 1. The order of the columns is not as we intended. Check if the columns are in this order, `"loan_amount", "income", "interest_rate", "approval"` before splitting the data into train-test.
 2. The `approval` column is not binary, which is contrary to what we intended. Before splitting, the `approval` column must have only 0s and 1s.
+3. You are working with loans **dataframe** which has different row order than `loans` table. According to README, "get the features and label from the `loans` **table** into a new dataframe `df`". The loans *table* and the loans *dataframe* are seperate entities. So, initialize `df` from `loans` table using `spark.sql`.
+4. You may have accidentally created a temporary view named `loans`. This will create a new view with a different row order. This will also replace the `loans` table from table namespace. You can check by running `q4` again. You are only supposed to create views for [these](./README.md#other-views).
 3. The data order somehow got changed before splitting into train and test. Hence, the train dataset is a different set of rows than we intended.
 4. Some rows mistakenly got deleted while handling missing values.
 5. There is an error in counting how many loans are approved.
@@ -67,20 +69,31 @@ This could be due to the following issues:
 Also, the first few rows of data should look like this before splitting. You can find this by running `df.show()`
 
 ```
-+-------------+--------+---------------+----------+
-| loan_amount | income | interest_rate | approval |
-+-------------+--------+---------------+----------+
-|   255000.0  |  210.0 |     0.000     |    1     |
-|   435000.0  |   0.0  |     3.125     |    0     |
-|   435000.0  |  190.0 |     0.000     |    1     |
-|   165000.0  |   0.0  |     3.250     |    0     |
-|   205000.0  |   0.0  |     0.000     |    1     |
-|   305000.0  |   0.0  |     3.500     |    0     |
-|   195000.0  |   43.0 |     2.750     |    1     |
-|   185000.0  |   0.0  |     3.500     |    0     |
-|   265000.0  |   93.0 |     2.750     |    1     |
-|   185000.0  |   0.0  |     3.250     |    0     |
-+-------------+--------+---------------+----------+
++-----------+------+-------------+--------+
+|loan_amount|income|interest_rate|approval|
++-----------+------+-------------+--------+
+|   255000.0| 210.0|          0.0|     1.0|
+|   435000.0|   0.0|        3.125|     0.0|
+|   435000.0| 190.0|          0.0|     1.0|
+|   165000.0|   0.0|         3.25|     0.0|
+|   205000.0|   0.0|          0.0|     1.0|
+|   305000.0|   0.0|          3.5|     0.0|
+|   195000.0|  43.0|         2.75|     1.0|
+|   185000.0|   0.0|          3.5|     0.0|
+|   265000.0|  93.0|         2.75|     1.0|
+|   185000.0|   0.0|         3.25|     0.0|
+|   475000.0|   0.0|        1.999|     1.0|
+|   235000.0|   0.0|         3.25|     0.0|
+|   425000.0|   0.0|          2.0|     1.0|
+|   235000.0|   0.0|         3.25|     0.0|
+|   185000.0|   0.0|         2.25|     1.0|
+|   385000.0|   0.0|          3.0|     0.0|
+|   365000.0| 321.0|        2.625|     1.0|
+|   155000.0|   0.0|          2.5|     0.0|
+|   245000.0|   0.0|         3.75|     1.0|
+|   315000.0|   0.0|          3.0|     0.0|
++-----------+------+-------------+--------+
+only showing top 20 rows
 ```
 
 
