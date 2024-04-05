@@ -1,6 +1,5 @@
-# DRAFT!  Don't start yet.
-
 # P6 (6% of grade): Cassandra, Weather Data
+GitHub Classroom Link: https://classroom.github.com/a/Q1wk-_pq
 
 ## Overview
 
