@@ -142,10 +142,6 @@ sure you're reading about the correct one):
 
 https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt
 
-Review the lecture demos where we used Spark to extract the station
-IDs from this text file:
-https://github.com/cs544-wisc/f23/blob/main/lec/22-spark
-
 Filter your results to the state of Wisconsin, and collect the rows in
 your notebook so you can loop over them, and do an `INSERT` into your
 `weather.stations` table for each station ID and name. 
