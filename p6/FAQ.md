@@ -1,2 +1,2 @@
 # Project Setup
-Before you begin, please run the commands mentioned in the README to get setup.sh file in your p6 directory. Running setup.sh will download needed files and save you the effort of manually copying over project files.
+Before you begin, please run the commands mentioned in the README to obtain the setup.sh file in your P6 directory. Running setup.sh will download the needed files and save you the effort of manually copying over project files.
