@@ -6,17 +6,7 @@ import concurrent.futures
 import json
 import threading
 import traceback
-
-
-def verify_files_present():
-    notebook_file = "nb/p6.ipynb"
-    expected_files = ["cassandra.sh", "docker-compose.yml", "Dockerfile", notebook_file, "pausable_nb_run.py",
-                      "nb/station.proto", "nb/ghcnd-stations.txt", "nb/records.zip"]
-
-    for file_name in expected_files:
-        if not os.path.exists(file_name):
-            raise Exception("Couldn't find file " + str(file_name))
-
+import argparse
 
 def get_environment():
     environment = os.environ.copy()
@@ -24,11 +14,23 @@ def get_environment():
 
 
 @cleanup
-def _cleanup(*args, **kwargs):
+def _cleanup():
     # Shut down existing
     print("Stopping all existing containers")
-    environment = get_environment()
-    subprocess.call(["docker", "compose", "down"], env=environment)
+    try:
+        subprocess.run(["docker compose kill; docker compose rm -f"], shell=True)
+        subprocess.run(["docker", "rmi", "-f", "p6-base"], check=True, shell=False)
+        subprocess.run(["docker", "system", "prune", "-f"], check=True, shell=False)
+
+        # remove any other running container in case 
+        result = subprocess.run(["docker", "container", "ls", "-a"], capture_output = True, check=True, shell=False)
+        stdout = result.stdout.decode('utf-8')
+        if stdout.count("\n") > 1:
+            warn(f"stopping other running containers to free up spaces:\n {stdout}")
+            subprocess.run(["docker stop $(docker ps -a -q)"], check=True, shell=True)
+            subprocess.run(["docker rm -f $(docker ps -a -q)"], check=True, shell=True)
+    except:
+        pass
 
 
 def wait_for_all_three_up():
@@ -140,9 +142,6 @@ def init_runner(test_dir):
         f"rm -rf {output_path}", shell=True, env=environment)
     os.makedirs(output_path, exist_ok=True)
 
-    print("Checking if all valid files are present in", test_dir)
-    verify_files_present()
-
     # Build the p6 base image
     _cleanup()
 
@@ -206,11 +205,12 @@ notebook_content = None
 
 
 @init
-def init(*args, **kwargs):
+def init():
     global output_dir_name, notebook_content
 
-    expected_path = kwargs["existing_file"]
-    if expected_path is None:
+    args = get_args()
+    expected_path ='nb/p6.ipynb'
+    if args.skip_run is False:
         test_dir = os.path.dirname(os.path.abspath(__file__))
         default_timeout = 1200  # Allow for 15 minutes to run the entire notebook
 
@@ -500,4 +500,17 @@ def q10():
 
 
 if __name__ == "__main__":
-    tester_main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--skip_run', action='store_true', help='Check answer without running the system')
+    tester_main(parser, required_files=[
+        "nb/p6.ipynb",
+        "nb/server.py",
+        "nb/station.proto",
+        "Dockerfile",
+        "autograde.py",
+        "cassandra.sh",
+        "docker-compose.yml",
+        "pausable_nb_run.py",
+        "setup.sh",
+        "tester.py",
+    ])
