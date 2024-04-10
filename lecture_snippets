@@ -1,3 +1,18 @@
+Lecture 30 (Apr 10):
+
+docker exec -it demo-db-1 bash
+nodetool status
+nodetool ring (16 vnodes per physical node)
+cqlsh demo-db-1
+	use banking;
+	SELECT * FROM loans;
+	SELECT bank_id, token(bank_id) FROM loans;
+	SELECT writetime(bank_id) FROM loans;
+	SELECT writetime(state) FROM loans;
+	UPDATE loans SET state = 'IL' where bank_id = 999 AND amount = 500 AND loan_id = d41208b0-f37c-11ee-b615-a9b057ea565d;
+	SELECT writetime(state) FROM loans;
+________________________________________________________________________________
+
 Lecture 27 (Apr 3):
 
 docker build . -t cassandra-demo
