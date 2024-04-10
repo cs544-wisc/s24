@@ -25,8 +25,14 @@ Learning objectives:
 
 Before starting, please revisit the [general project directions](../projects.md).
 
+Also, we have an [FAQ](./FAQ.md) page for this project. Please have a look before you reach out to the staff. 
+
 ## :pushpin: Corrections/Clarifications
-None
+
+1. **[Apr 01, 2024]:** Updated `autograder.py` to remove manual grading points from `q6` and `q8`. The total autograde score is **80** now instead of 100. This will not affect any correct submission.
+2. **[Apr 01, 2024]:** Added clarifications in `q7`. This will not affect any correct answers.
+3. **[Mar 26, 2024]:** Updated `autograder.py`. Added another answer for `q7`. Existing correct submissions will still be correct. Run `./setup.sh` to update the files.
+4. **[Mar 26, 2024]:** Added instructions to `q9` to make it reproducible. Existing correct submissions will still be correct.
 
 
 ## :hammer_and_wrench: Cluster Setup
@@ -331,7 +337,7 @@ For this, have a cell in your notebook that looks like the following:
 #### Q7: What are the application counts for Wells Fargo applications for the ten counties where Wells Fargo applications have the highest average loan amount?
 
 Let's break it down into two parts. 
-* Think about the ten counties where *Wells Fargo* applications have the highest average loan amount. 
+* Out of all the applications made to *Wells Fargo*, find the names of the top ten counties of those applications in terms of the average loan amount.
 * Now, that you have the names of those counties, how many applications have been made from those counties to *Wells Fargo*.
 
 **Information:** `county_code` in `loans` is the state and county codes concatenated together whereas `counties` have these as separate columns (as an example, 55025 is the county_code for Dane County in loans, but this will show up as `STATE=55` and `COUNTY=25` in the counties view. As such, you may find the following snippet useful when joining with `counties` 
@@ -340,6 +346,8 @@ Let's break it down into two parts.
 ON loans.county_code = counties.STATE*1000 + counties.COUNTY
 ...
 ```
+
+Also, by Wells Fargo applications, we mean loan applications made to any bank with "Wells Fargo" in its name.
 
 Answer Q7 with a Python `dict` that looks like this:
 
@@ -385,7 +393,7 @@ Write your answer in a cell like the following.
 ## :robot: Part 4: Machine Learning
 
 The objective of Part 4 is to use the given loan dataset to train a
-Decision Tree model that can predict outcomes of loan applications
+Random Forest model that can predict outcomes of loan applications
 (approved or not). Recall that a loan is approved if `action_taken` is
 "Loan originated".
 
@@ -398,6 +406,8 @@ First, as a preparatory step, get the features and label from the loans
 table into a new dataframe `df`. Cast the `approval`, `income` and `interest_rate`
 columns to `double` type and fill missing values of all features and label columns
 by 0.0.
+
+**Important:** To make the results reproducible, we emphasize keeping the order of columns as follows: `"loan_amount", "income", "interest_rate", "approval".`
 
 Then split `df` as follows:
 
@@ -413,7 +423,7 @@ Answer with a single number.
 
 #### Q10. What is the accuracy of the random forest classifier with 10 trees on the test dataset?
 
-You'll need to train a decision tree first.  Start with some imports:
+You'll need to train a random forest first.  Start with some imports:
 
 ```python
 from pyspark.ml.feature import VectorAssembler
@@ -489,6 +499,17 @@ Note that, while grading, we will run the full test.
 
 ### Manual Grading
 
-Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)!
+Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS (0/0)`).
+
+### Point Breakdown
+
+Breakdown of total 100 points is as follows:
+
+* Autograde (80 points)
+* Manual Grade (20 points)
+     * Q6 (10 points)
+     * Q8 (10 points)
+
+
 
 <!-- Of course, the checker only looks at the answers, not how you got them, so there may be further deductions (especially in the case of hardcoding answers). Moreover, Q6 and Q8 will be manually graded after your submission, so the autograder will not give you any feedback on them (it always says `PASS`)! -->

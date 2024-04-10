@@ -1,6 +1,5 @@
-# DRAFT!  Don't start yet.
-
 # P6 (6% of grade): Cassandra, Weather Data
+GitHub Classroom Link: https://classroom.github.com/a/Q1wk-_pq
 
 ## Overview
 
@@ -25,18 +24,15 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Corrections/Clarifications
 
-* November 10th: Added in `--existing` flag
-* November 13th: Added in clarification about the file structure
-* November 14th: Fix q10 to account for single quoute strings
-* November 15th: Added hint about using pivot
-* November 21st: Bumped up timeouts
+- Apr 5: fixing URL for setup.sh
+- Apr 8: fixed autograde.py and updated argument information
 
 ## Cluster Setup
 
-We have provided you with a `setup.sh` which will download and setup all the necessary files for this project. 
+We have provided you with a `setup.sh` which will download and set up all the necessary files for this project. 
 Note that you might need to give `setup.sh` executable permission before running it. You can do this using:
 ```
-wget https://raw.githubusercontent.com/cs544-wisc/f23/main/p6/setup.sh -O setup.sh
+wget https://raw.githubusercontent.com/cs544-wisc/s24/main/p6/setup.sh -O setup.sh
 chmod u+x setup.sh
 ./setup.sh
 ```
@@ -54,7 +50,7 @@ your browser.
 Create a notebook `p6.ipynb` in the `/nb` directory for your work.
 Use the same format for answers as in past projects (e.g., `#q1`).
 
-It generally takes around 1 to 2 minutes fro the Cassandra cluster to be ready. Write a cell like this:
+It generally takes around 1 to 2 minutes for the Cassandra cluster to be ready. Write a cell like this:
 ```python3
 !nodetool status
 ```
@@ -147,18 +143,14 @@ sure you're reading about the correct one):
 
 https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt
 
-Review the lecture demos where we used Spark to extract the station
-IDs from this text file:
-https://github.com/cs544-wisc/f23/blob/main/lec/22-spark
-
-Filter your results to the state of Wisconsin, collect the rows in
+Filter your results to the state of Wisconsin, and collect the rows in
 your notebook so you can loop over them, and do an `INSERT` into your
 `weather.stations` table for each station ID and name. 
 
 If you did this correctly, then running the query `SELECT COUNT(*) FROM weather.stations`
 should produce "1313" as the output.
 
-#### Q2: what is the name corresponding to station ID `USW00014837`?
+#### Q2: what is the name corresponding to station ID `US1WIMR0003`?
 
 Write a Cassandra query to obtain the answer.
 
@@ -177,7 +169,7 @@ Handle the case where the ring "wraps around" (meaning the row token is bigger t
 
 #### Server
 
-Now you'll write gRPC-based `nb/server.py` file that receives
+Now you'll write a gRPC-based `nb/server.py` file that receives
 temperature data and records it to `weather.stations`.  You could
 imagine various sensor devices acting as clients that make gRPC calls
 to `server.py` to record data, but for simplicity we'll make the
@@ -260,7 +252,7 @@ columns. You can ignore other measurements. HINT: The [pivot](https://spark.apac
 function in PySpark might be useful to rearrange the data.
 
 Collect and loop over the results, making a call to the server with
-for each row to insert the measurements to the database.
+for each row to insert the measurements into the database.
 
 Change number types and date formats as necessary. Note that CQL requires that
 you insert date data in `yyyy-mm-dd` format
@@ -344,7 +336,7 @@ docker exec -it p6-db-1 python3 /nb/server.py
 We should also be able to open `http://localhost:5000/lab`, find your notebook, and run it.
 
 Verify that your submission repo has a structure similar to this and should contain at least the specified files.
-It can have additional files but it should definetly contain the files shown below:
+It can have additional files but it should contain the files shown below:
 
 ```
 .
@@ -363,7 +355,7 @@ It can have additional files but it should definetly contain the files shown bel
 
 ## Testing:
 
-We also be using an autograder to verify your solution which you can run yourself by running the following command in the `p6` directory:
+We would also be using an autograder to verify your solution which you can run yourself by running the following command in the `p6` directory:
 ```
 python3 autograde.py
 ```
@@ -373,10 +365,10 @@ This will create a `autograder_result` directory with the following content:
 * `nb_runner.out` : This will contain both the stdout and stderr from running the autograder. You can examine this if you run into bugs with the autograder.
 * `server.out` : This will contain the stdout and stderr from running your server code. You can examine this to debug your server code
 
-Note that this will shutdown any existing cluster, restart it and re execute the entire notebook. This will take a while so if you want to run the solution
-on your existing notebook without recreating existing cluster and rerunning the entire notebook then you can use the `--existing` flag like this:
+Note that this will shut down any existing cluster, restart it, and re-execute the entire notebook. This will take a while so if you want to run the solution
+on your existing notebook without recreating the existing cluster and rerunning the entire notebook then you can use the `-s` flag like this:
 ```
-python3 autograde.py --existing <path_to_existing_file>
+python3 autograde.py -s
 ```
 
 Note that when grading your solution, we will be running `python3 autograde.py` but the above option is to enable faster development. 
