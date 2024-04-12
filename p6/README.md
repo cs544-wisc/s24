@@ -26,6 +26,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 - Apr 5: fixing URL for setup.sh
 - Apr 8: fixed autograde.py and updated argument information
+- Apr 12: removed -s functionality for autograde.py
 
 ## Cluster Setup
 
@@ -365,10 +366,4 @@ This will create a `autograder_result` directory with the following content:
 * `nb_runner.out` : This will contain both the stdout and stderr from running the autograder. You can examine this if you run into bugs with the autograder.
 * `server.out` : This will contain the stdout and stderr from running your server code. You can examine this to debug your server code
 
-Note that this will shut down any existing cluster, restart it, and re-execute the entire notebook. This will take a while so if you want to run the solution
-on your existing notebook without recreating the existing cluster and rerunning the entire notebook then you can use the `-s` flag like this:
-```
-python3 autograde.py -s
-```
-
-Note that when grading your solution, we will be running `python3 autograde.py` but the above option is to enable faster development. 
+Note that this will shut down any existing cluster, restart it, and re-execute the entire notebook.
