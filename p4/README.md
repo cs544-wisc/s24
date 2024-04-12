@@ -140,7 +140,7 @@ re-created, consider having a cell with the following, prior to the
 !hdfs dfs -rm -f hdfs://boss:9000/double.csv
 ```
 
-#### Q2: what are the logical and physical sizes of the CSV files?
+#### Q2: what are the logical and physical sizes of the CSV files in Megabytes?
 
 Run a `du` command with `hdfs dfs` to see.
 
