@@ -16,6 +16,7 @@ import subprocess
 import threading
 import time
 import json
+import argparse
 
 BROKER_URL = "localhost:9092"
 TMP_DIR = "autograder_files"
@@ -513,5 +514,6 @@ def test_plot_generation():
             return "Plot doesn't seem to be updating on re-running"
 
 if __name__ == "__main__":
-    tester_main()
+    parser = argparse.ArgumentParser()
+    tester_main(parser)
 
