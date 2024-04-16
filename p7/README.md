@@ -1,5 +1,7 @@
 # P7 (6% of grade): Kafka, Weather Data
 
+GitHub Classroom Link: https://classroom.github.com/a/zfePYfOq
+
 ## Overview
 
 For this project, imagine a scenario where you are receiving daily
