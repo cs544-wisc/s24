@@ -175,7 +175,7 @@ def run_in_docker(container_name, command):
 
 def is_day_count_valid(data):
     date2 = datetime.strptime(data['end'], "%Y-%m-%d")
-    date1 = datetime(date2.year, date2.month, 1)
+    date1 = datetime.strptime(data['start'], "%Y-%m-%d")
     delta = (date2 - date1).days + 1
     return data['count'] == delta
 
