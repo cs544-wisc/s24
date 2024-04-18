@@ -1,6 +1,6 @@
-# DRAFT!  Don't start yet.
-
 # P7 (6% of grade): Kafka, Weather Data
+
+GitHub Classroom Link: https://classroom.github.com/a/zfePYfOq
 
 ## Overview
 
@@ -24,12 +24,6 @@ Learning objectives:
 * use manual and automatic assignment of Kafka topics and partitions
 
 Before starting, please review the [general project directions](../projects.md).
-
-## Clarifications/Correction
-
-* Nov 24: autograder.py added.
-* Nov 28: autograder bugfix: Added COPY statement to Dockerfile (required to run autograder correctly)
-* Nov 30: autograder update: Increase timeouts and delays to ensure consistent test results
 
 ## Container setup
 

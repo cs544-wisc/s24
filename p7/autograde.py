@@ -16,6 +16,7 @@ import subprocess
 import threading
 import time
 import json
+import argparse
 
 BROKER_URL = "localhost:9092"
 TMP_DIR = "autograder_files"
@@ -174,7 +175,7 @@ def run_in_docker(container_name, command):
 
 def is_day_count_valid(data):
     date2 = datetime.strptime(data['end'], "%Y-%m-%d")
-    date1 = datetime(date2.year, date2.month, 1)
+    date1 = datetime.strptime(data['start'], "%Y-%m-%d")
     delta = (date2 - date1).days + 1
     return data['count'] == delta
 
@@ -513,5 +514,6 @@ def test_plot_generation():
             return "Plot doesn't seem to be updating on re-running"
 
 if __name__ == "__main__":
-    tester_main()
+    parser = argparse.ArgumentParser()
+    tester_main(parser)
 
