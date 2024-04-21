@@ -1,5 +1,3 @@
-# DRAFT!  Don't start yet.
-
 # P8 (6% of grade): BigQuery, Loans Data
 
 ## Overview
@@ -23,9 +21,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## Clarifications/Correction
 
-* Dec 05: [Autograder](autograde.py) changed for Q3. Updated [setup](#warning-caution) to handle re-authentication issues.
-* Dec 07: Added clarification about backticks. Added `jupyterlab` in installation.
-* Dec 08: Added clarification about uploading parquet files.
+None
 
 ## Setup
 
@@ -92,7 +88,7 @@ from google.cloud import bigquery
 bq = bigquery.Client()
 ```
 
-You can do queries and get results in Pandas DataFrames like this (more on this later):
+You can do queries and get results in Pandas DataFrames like this:
 
 ```python
 q = bq.query(
@@ -100,6 +96,13 @@ q = bq.query(
 --- your query here ---
 """)
 q.to_dataframe()
+```
+
+You can also use `%%bigquery` magic in notebook like this:
+
+```
+%%bigquery
+--- your query here ---
 ```
 
 The autograder will extract your output from these cells, so it won't
@@ -311,7 +314,7 @@ overfitting doesn't give you an unrealistically good score -- to keep
 the project simple; we aren't bothering with train/test splits this
 time.
 
-<!-- DONE: Added this to clarify -->
+<!-- DONE: Added this to clarify
 **Note:** If you encounter an error like `NotFound: 404 Not found: Model <project>:<dataset>.<model>`, make your notebook to wait for some time.
 Sometimes it takes 1-2 minutes for BigQuery to notice that a model has been created.
 To handle this case, you should write the following snippet before Q8 to make the notebook wait until BigQuery can see your model.
@@ -322,7 +325,7 @@ while True:
     if <your condition here>:  # Hint: use bq.list_models()
         break
     time.sleep(5)
-```
+``` -->
 
 #### Q9: what is the coefficient weight on the income column?
 
