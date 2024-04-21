@@ -1,0 +1,14 @@
+*.zip
+*.csv
+*__pycache__*
+*.parquet
+
+# more
+.Trash-*
+*/.ipynb_checkpoints/*
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+

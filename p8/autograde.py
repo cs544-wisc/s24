@@ -68,8 +68,8 @@ def q1():
         return "ERROR: Answer to question 1 not found"
     outputs = ANSWERS[1]
 
-    output = nbutils.parse_str_output(outputs)
-    if not (output == '"55025"' or output == "'55025'"):
+    output = nbutils.parse_float_output(outputs)
+    if not nbutils.compare_float(3.4281144226069675, output):
         return "Wrong answer"
     
 
@@ -82,7 +82,7 @@ def q2():
 
     output = nbutils.parse_dict_int_output(outputs)
     if not nbutils.compare_dict_ints(
-        {'48': 254, '13': 159, '51': 133, '21': 120, '29': 115}, 
+        {'TX': 254, 'GA': 159, 'VA': 133, 'KY': 120, 'MO': 115}, 
         output):
         return "Wrong answer"
 
@@ -96,7 +96,10 @@ def q3():
 
     output = nbutils.parse_dict_float_output(outputs)
     if not nbutils.compare_dict_floats(
-        {'q1': 5.9604644775390625e-05, 'q2': 5.9604644775390625e-05}, 
+        {
+            'q1': 5.9604644775390625e-05, 
+            'q2': 0.00011920928955078125
+        }, 
         output,
         tolerance=0.02):
         return "Wrong answer"
@@ -160,23 +163,41 @@ def q7():
     
     output = nbutils.parse_dict_int_output(outputs)
 
+    wisconsin_counties = {
+        'Bayfield', 'Door', 'Jackson', 'Richland', 'Burnett', 'Vernon', 'Iron', 
+        'Trempealeau', 'Waupaca', 'Pepin', 'Waushara', 'Polk', 'Washburn', 'Buffalo', 
+        'Vilas', 'Oneida', 'Taylor', 'Marquette', 'Juneau', 'Lafayette', 'Sawyer', 
+        'Ashland', 'Langlade', 'Adams', 'Crawford', 'Barron', 'Monroe', 'Price', 
+        'Forest', 'Green Lake', 'Clark', 'Rusk', 'Outagamie', 'Calumet', 'Sauk', 
+        'Dodge', 'Kenosha', 'Douglas', 'Chippewa', 'Eau Claire', 'Fond du Lac', 
+        'Brown', 'Kewaunee', 'Oconto', 'Florence', 'Rock', 'La Crosse', 'Iowa', 'Dane', 
+        'Columbia', 'Green', 'Manitowoc', 'Marinette', 'Dunn', 'Milwaukee', 'Waukesha', 
+        'Washington', 'Ozaukee', 'Pierce', 'St. Croix', 'Winnebago', 'Grant', 'Racine', 
+        'Shawano', 'Menominee', 'Sheboygan', 'Portage', 'Jefferson', 'Marathon', 
+        'Lincoln', 'Walworth', 'Wood'
+    }
+
+    for county in output:
+        if county not in wisconsin_counties:
+            return f'Wrong answer. {county} is not a county in Wisconsin'
+
     data = {
-        'Sheboygan': 1,
-        'Barron': 1,
         'Brown': 1,
-        'Bayfield': 1,
-        'Columbia': 1,
         'Monroe': 1,
-        'Oneida': 1,
-        'Dane': 1,
         'Walworth': 1,
-        'Jefferson': 1,
-        'Door': 1,
-        'Sauk': 1,
-        'Marinette': 1,
-        'Green Lake': 1,
         'Kewaunee': 1,
-        'Outagamie': 1
+        'Dane': 1,
+        'Barron': 1,
+        'Green Lake': 1,
+        'Jefferson': 1,
+        'Sheboygan': 1,
+        'Columbia': 1,
+        'Outagamie': 1,
+        'Sauk': 1,
+        'Marinette': 2,
+        'Door': 1,
+        'Oneida': 1,
+        'Bayfield': 1
     }
 
     for county, app_count in data.items():
