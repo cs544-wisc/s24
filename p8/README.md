@@ -1,8 +1,6 @@
-# DRAFT!  Don't start yet.
-
 # P8 (6% of grade): BigQuery, Loans Data
 
-## Overview
+## :telescope: Overview
 
 In this project, we'll (a) study the geography of loans in WI using
 BigQuery and (b) make predictions about loan amounts.  You'll be
@@ -21,11 +19,11 @@ Learning objectives:
 Before starting, please review the [general project directions](../projects.md).
 
 
-## Clarifications/Correction
+## :pushpin: Clarifications/Correction
 
 None
 
-## Setup
+## :hammer_and_wrench: Setup
 
 ### Cleanup
 
@@ -48,7 +46,7 @@ Google Drive.  You can do so by pasting the following into the
 terminal on your VM and following the directions. Please read the following cautions before running this command.
 
 ```
-gcloud auth application-default login --scopes=openid,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/drive.readonly,https://www.googleapis.com/auth/devstorage.read_write
+gcloud auth application-default login --scopes=openid,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/drive.readonly
 ```
 
 ### :warning: Caution
@@ -128,7 +126,7 @@ etc.).  For this project, answers are simple types (e.g., `int`s,
 `float`s, `dict`s), so you'll need to do a little extra work to get
 results out of the DataFrames you get from BigQuery.
 
-## Part 1: County and State Data (Public Dataset)
+## :world_map: Part 1: County and State Data (Public Dataset)
 
 For this part, you'll use two tables
 
@@ -223,11 +221,11 @@ Answer with `dict` where keys identify which query, and values are the cost in d
 
 **Note:** If your query is fetching more data than necessary (e.g. selecting unnecessary columns, joining more tables than needed), you will get a higher cost than we intended.
 
-## Part 2: HDMA Data (Parquet in GCS)
+## :moneybag: Part 2: HDMA Data (Parquet in GCS)
 
 <!-- Link Updated. Check! -->
 Download
-https://pages.cs.wisc.edu/~harter/cs544/data/hdma-wi-2021.parquet.  This is a subset of the data from the CSV in
+https://pages.cs.wisc.edu/~tareq/cs544/data/hdma-wi-2021-split.parquet.  This is a subset of the data from the CSV in
 hdma-wi-2021.zip that we used in earlier projects.  We've done some
 cleanup and conversion work for you to make the parquet file -- [see
 here](cleanup.md) if you're interested about what exactly we've done.
@@ -277,7 +275,7 @@ applications.  It should look like this:
 You'll need to join your private table against the public counties
 table to get the county name. Note that, `county_code` in the `p8.hdma` table is the FIPS code for a county.
 
-## Part 3: Application Data (Google Sheet Linked to Form)
+## :card_index_dividers: Part 3: Application Data (Google Sheet Linked to Form)
 
 Now let's pretend you have a very lucrative data science job and want to buy a vacation home in WI.  First, decide a few things:
 
@@ -333,20 +331,21 @@ Ignore any lat/lon points that get submitted to the form but fall
 outside of WI.  The FIPS code (`state_fips_code`) for WI is `'55'` --
 feel free to hardcode 55 in your query if it helps.
 
-## Part 4: Machine Learning
+## :robot: Part 4: Machine Learning
 
 Create a linear regression model (`model_type='LINEAR_REG'`) to
-predict `loan_amount` based on `income`, and `loan_term` -- train it
-on the HDMA data. **You need to put backticks around your model and dataset name in your
-queries for this part**. For example, if your dataset was named `test` you need to specify it
-as `` `test` `` in your queries. 
+predict `loan_amount` based on `income`, and `loan_term`. HDMA data has a column `dataset` that signifies whether a row belongs to train or test dataset. Train it on the `train` dataset of HDMA data. It may take ~60 seconds to build the model.
 
-#### Q8: what is your model's `r2_score` on the HDMA dataset on which it was trained?
+**Note:** You must put backticks around your model and dataset name in your queries for this part. 
 
-Note that you would normally split your data into train/test so that
+#### Q8: what is your model's `mean_absolute_error` on the `test` dataset of HDMA data?
+
+The output should be a float.
+
+<!-- Note that you would normally split your data into train/test so that
 overfitting doesn't give you an unrealistically good score -- to keep
 the project simple; we aren't bothering with train/test splits this
-time.
+time. -->
 
 <!-- DONE: Added this to clarify
 **Note:** If you encounter an error like `NotFound: 404 Not found: Model <project>:<dataset>.<model>`, make your notebook to wait for some time.
@@ -361,9 +360,9 @@ while True:
     time.sleep(5)
 ``` -->
 
-#### Q9: what is the coefficient weight on the income column?
+#### Q9: what is the coefficient weight on the `loan_term` column?
 
-Output should be a float.
+The output should be a float.
 
 #### Q10: what ratio of the loan applications in the Google form are for amounts greater than the model would predict, given income?
 
@@ -373,9 +372,9 @@ Note that the model has two features: `income` and `loan_term`; the form
 only collects income, so assume the loan term is 360 months (30 years)
 for all the applications in the Google sheet.
 
-## Testing
+## :trophy: Testing
 
-Run the following to check that your cell outputs are reasonable:
+Run the following to check that your cell outputs are reasonable.
 
 ```bash
 python3 autograde.py
@@ -386,12 +385,17 @@ Google account (like your GCP project name).  We won't re-run the
 notebooks this time.  We will just look at your code and check your
 cell outputs.
 
-## Submission
+## :checkered_flag: Submission
 
 Check that all the tests are passing
-when you submit. Then, add p8.ipynb, commit, and push to GitHub.
+when you submit. Then, add `p8.ipynb`, commit, and push to GitHub. The structure of the required files for your submissions is as follows:
 
-Do not forget to revoke the permission to access your Google
+```
+project-8-<your_team_name>
+|--- p8.ipynb
+```
+
+:warning: Do not forget to revoke the permission to access your Google
 drive. Run the following command in your VM.
 
 ```
