@@ -1,8 +1,9 @@
 import json
 import re  # parsing JSON and regular expressions
-from tester import init, test, tester_main
+from tester import init, test, tester_main, get_args
 import nbutils
 import os
+import argparse
 
 ANSWERS = {}  # global variable to store answers { key = question number, value = output of the answer cell }
 
@@ -15,6 +16,8 @@ def collect_cells(*args, **kwargs):
     if not os.path.exists('p8.ipynb'):
         FILE_NOT_FOUND = True
         return 
+    
+    args = get_args()
 
     with open("p8.ipynb") as f:
         nb = json.load(f)  # load the notebook as a json object
@@ -24,7 +27,7 @@ def collect_cells(*args, **kwargs):
         for cell in cells:
             if "execution_count" in cell and cell["execution_count"]:
                 exec_count = cell["execution_count"]
-                if exec_count != expected_exec_count:
+                if (not args.skip_run) and exec_count != expected_exec_count:
                     raise Exception(
                         f"""
                         Expected execution count {expected_exec_count} but found {exec_count}. 
@@ -244,4 +247,8 @@ def q10():
 
 
 if __name__ == '__main__':
-    tester_main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--skip-run', action='store_true', help='Check answer without running the system')
+    tester_main(parser, required_files=[
+        "p8.ipynb"
+    ])
