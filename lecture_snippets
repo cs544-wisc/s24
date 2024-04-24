@@ -1,3 +1,35 @@
+Lecture 36 (Apr 24):
+
+Dataset source: https://ms.sites.cs.wisc.edu/cs544/s24/schedule.html
+Other useful resources:
+https://console.cloud.google.com/marketplace
+https://developers.google.com/identity/protocols/oauth2/scopes
+https://cloud.google.com/sustainability/region-carbon
+https://cloud.google.com/bigquery/pricing#on_demand_pricing
+
+Queries:
+
+SELECT geo_id, county_name FROM `bigquery-public-data.geo_us_boundaries.counties` LIMIT 10
+
+SELECT geo_id, county_name 
+FROM `bigquery-public-data.geo_us_boundaries.counties` 
+WHERE county_name = 'Dane'
+
+SELECT counties.geo_id, county_name, states.state_name
+FROM `bigquery-public-data.geo_us_boundaries.counties` AS counties
+INNER JOIN `bigquery-public-data.geo_us_boundaries.states` AS states
+ON counties.state_fips_code = states.state_fips_code
+WHERE states.state_name = "Wisconsin"
+LIMIT 100
+
+Jupyter / VM setup:
+
+pip3 install google-cloud-bigquery google-cloud-bigquery-storage pyarrow tqdm ipywidgets pandas matplotlib db-dtypes pandas-gbq
+gcloud auth application-default login --scopes=openid,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/drive.readonly
+gcloud auth application-default revoke
+python3 -m jupyterlab --no-browser
+%load_ext google.cloud.bigquery
+
 Lecture 31 (Apr 12):
 
 docker build . -t kafka-demo
