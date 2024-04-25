@@ -1,4 +1,5 @@
 # P8 (6% of grade): BigQuery, Loans Data
+GitHub Classroom Link: https://classroom.github.com/a/AOchjPXi
 
 ## :telescope: Overview
 
