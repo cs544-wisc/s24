@@ -22,7 +22,7 @@ Before starting, please review the [general project directions](../projects.md).
 
 ## :pushpin: Clarifications/Correction
 
-None
+1. **[April 25, 2024]:** `autograde.py` updated for Q1. Also, added a clarification for Q1.
 
 ## :hammer_and_wrench: Setup
 
@@ -189,7 +189,7 @@ Now, let's answer some questions from `bigquery-public-data.geo_us_boundaries.co
 
 #### Q1: What percentage of Dane County's area is covered by water? (note that Madison is in Dane county). 
 
-The output should be a float.
+The total area can be determined by summing the areas of land and water. The output should be a float.
 
 #### Q2: Which states have the most number of counties?
 
