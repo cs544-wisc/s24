@@ -71,7 +71,7 @@ def q1():
     outputs = ANSWERS[1]
 
     output = nbutils.parse_float_output(outputs)
-    if not nbutils.compare_float(3.4281144226069675, output):
+    if not nbutils.compare_float(3.314489915768649, output):
         return "Wrong answer"
     
 
