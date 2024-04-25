@@ -132,7 +132,7 @@ For this part, you'll use two tables
 
 
 1. `bigquery-public-data.geo_us_boundaries.counties`
-2. `bigquery-public-data.geo_us_boundaries.state`
+2. `bigquery-public-data.geo_us_boundaries.states`
 
 These tables contains names, IDs, boundaries, and more for every county and state in the United States.
 
@@ -295,7 +295,7 @@ Now, run some code to add the sheet as an external BigQuery table. The name of t
 
 
 ```python
-url = "https://docs.google.com/spreadsheets/d/11UeIBqQylAyNUBsIO54p6WiYJWHayQMfHDbUWq1jGco/"
+url = "https://docs.google.com/spreadsheets/d/1FfalqAWdzz01D1zIvBxsDWLW05-lvANWjjAj2vI4A04/"
 
 external_config = bigquery.ExternalConfig("GOOGLE_SHEETS")
 external_config.source_uris = [????]
