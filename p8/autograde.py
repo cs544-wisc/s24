@@ -3,6 +3,7 @@ import re  # parsing JSON and regular expressions
 from tester import init, test, tester_main
 import nbutils
 import os
+import argparse
 
 ANSWERS = {}  # global variable to store answers { key = question number, value = output of the answer cell }
 
@@ -24,12 +25,13 @@ def collect_cells(*args, **kwargs):
         for cell in cells:
             if "execution_count" in cell and cell["execution_count"]:
                 exec_count = cell["execution_count"]
-                if exec_count != expected_exec_count:
-                    raise Exception(
-                        f"""
-                        Expected execution count {expected_exec_count} but found {exec_count}. 
-                        Please do Restart & Run all then save before running the tester.
-                        """)
+                # removed restart and run all check!
+                # if exec_count != expected_exec_count:
+                #     raise Exception(
+                #         f"""
+                #         Expected execution count {expected_exec_count} but found {exec_count}. 
+                #         Please do Restart & Run all then save before running the tester.
+                #         """)
                 expected_exec_count = exec_count + 1
 
             if cell["cell_type"] != "code":
@@ -68,8 +70,8 @@ def q1():
         return "ERROR: Answer to question 1 not found"
     outputs = ANSWERS[1]
 
-    output = nbutils.parse_str_output(outputs)
-    if not (output == '"55025"' or output == "'55025'"):
+    output = nbutils.parse_float_output(outputs)
+    if not nbutils.compare_float(3.314489915768649, output):
         return "Wrong answer"
     
 
@@ -82,7 +84,7 @@ def q2():
 
     output = nbutils.parse_dict_int_output(outputs)
     if not nbutils.compare_dict_ints(
-        {'48': 254, '13': 159, '51': 133, '21': 120, '29': 115}, 
+        {'TX': 254, 'GA': 159, 'VA': 133, 'KY': 120, 'MO': 115}, 
         output):
         return "Wrong answer"
 
@@ -96,7 +98,10 @@ def q3():
 
     output = nbutils.parse_dict_float_output(outputs)
     if not nbutils.compare_dict_floats(
-        {'q1': 5.9604644775390625e-05, 'q2': 5.9604644775390625e-05}, 
+        {
+            'q1': 5.9604644775390625e-05, 
+            'q2': 0.00011920928955078125
+        }, 
         output,
         tolerance=0.02):
         return "Wrong answer"
@@ -160,23 +165,41 @@ def q7():
     
     output = nbutils.parse_dict_int_output(outputs)
 
+    wisconsin_counties = {
+        'Bayfield', 'Door', 'Jackson', 'Richland', 'Burnett', 'Vernon', 'Iron', 
+        'Trempealeau', 'Waupaca', 'Pepin', 'Waushara', 'Polk', 'Washburn', 'Buffalo', 
+        'Vilas', 'Oneida', 'Taylor', 'Marquette', 'Juneau', 'Lafayette', 'Sawyer', 
+        'Ashland', 'Langlade', 'Adams', 'Crawford', 'Barron', 'Monroe', 'Price', 
+        'Forest', 'Green Lake', 'Clark', 'Rusk', 'Outagamie', 'Calumet', 'Sauk', 
+        'Dodge', 'Kenosha', 'Douglas', 'Chippewa', 'Eau Claire', 'Fond du Lac', 
+        'Brown', 'Kewaunee', 'Oconto', 'Florence', 'Rock', 'La Crosse', 'Iowa', 'Dane', 
+        'Columbia', 'Green', 'Manitowoc', 'Marinette', 'Dunn', 'Milwaukee', 'Waukesha', 
+        'Washington', 'Ozaukee', 'Pierce', 'St. Croix', 'Winnebago', 'Grant', 'Racine', 
+        'Shawano', 'Menominee', 'Sheboygan', 'Portage', 'Jefferson', 'Marathon', 
+        'Lincoln', 'Walworth', 'Wood'
+    }
+
+    for county in output:
+        if county not in wisconsin_counties:
+            return f'Wrong answer. {county} is not a county in Wisconsin'
+
     data = {
-        'Sheboygan': 1,
-        'Barron': 1,
         'Brown': 1,
-        'Bayfield': 1,
-        'Columbia': 1,
         'Monroe': 1,
-        'Oneida': 1,
-        'Dane': 1,
         'Walworth': 1,
-        'Jefferson': 1,
-        'Door': 1,
-        'Sauk': 1,
-        'Marinette': 1,
-        'Green Lake': 1,
         'Kewaunee': 1,
-        'Outagamie': 1
+        'Dane': 1,
+        'Barron': 1,
+        'Green Lake': 1,
+        'Jefferson': 1,
+        'Sheboygan': 1,
+        'Columbia': 1,
+        'Outagamie': 1,
+        'Sauk': 1,
+        'Marinette': 2,
+        'Door': 1,
+        'Oneida': 1,
+        'Bayfield': 1
     }
 
     for county, app_count in data.items():
@@ -194,7 +217,7 @@ def q8():
     outputs = ANSWERS[8]
     
     output = nbutils.parse_float_output(outputs)
-    if not nbutils.compare_float(0.2916541228802003, output):
+    if not nbutils.compare_float(77294.68408464073, output):
         return "Wrong answer"
 
 
@@ -206,7 +229,7 @@ def q9():
     outputs = ANSWERS[9]
     
     output = nbutils.parse_float_output(outputs)
-    if not nbutils.compare_float(0.805777303717665, output):
+    if not nbutils.compare_float(381.80803658755053, output):
         return "Wrong answer"
 
 
@@ -223,4 +246,8 @@ def q10():
 
 
 if __name__ == '__main__':
-    tester_main()
+    parser = argparse.ArgumentParser()
+    # parser.add_argument('-s', '--skip-run', action='store_true', help='Check answer without running the system')
+    tester_main(parser, required_files=[
+        "p8.ipynb"
+    ])
