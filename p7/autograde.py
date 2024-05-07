@@ -50,7 +50,6 @@ def restart_kafka():
     subprocess.call("docker kill p7-autograder-kafka", shell=True)
     subprocess.call("docker rm p7-autograder-kafka", shell=True)
     try:
-        print(f"restart_kafka: running docker run")
         result = subprocess.run(
             [
                 "docker",
@@ -66,7 +65,6 @@ def restart_kafka():
             ],
             check=True,
         )
-        print(f"restart_kafka: {result.returncode}")
         if result.returncode != 0:
             raise Exception("Failed to run Kafka container")
     except:
