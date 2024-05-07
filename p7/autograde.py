@@ -66,9 +66,9 @@ def restart_kafka():
             check=True,
         )
         if result.returncode != 0:
-            return "Failed to run Kafka container"
-    except subprocess.CalledProcessError as e:
-        return "Failed to run Kafka container"
+            raise Exception("Failed to run Kafka container")
+    except:
+        raise Exception("Failed to run Kafka container")
 
 
 def wait_for_kafka_to_be_up():
