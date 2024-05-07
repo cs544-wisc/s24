@@ -184,6 +184,7 @@ def _cleanup(*args, **kwargs):
     log("Cleaning up: Stopping all existing containers and temp files")
     subprocess.call("docker kill p7-autograder-kafka", shell=True)
     subprocess.call("docker rm p7-autograder-kafka", shell=True)
+    subprocess.call("docker rmi p7-autograder-build", shell=True)
     # delete_temp_dir()
 
 
