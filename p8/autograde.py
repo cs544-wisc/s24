@@ -89,21 +89,35 @@ def q2():
         return "Wrong answer"
 
 
-@test(points=10)
-def q3():
+@test(points=5)
+def q3_cost_q1():
     if FILE_NOT_FOUND: return "ERROR: File p8.ipynb not found"
     if not 3 in ANSWERS:
         return "ERROR: Answer to question 3 not found"
     outputs = ANSWERS[3]
 
     output = nbutils.parse_dict_float_output(outputs)
-    if not nbutils.compare_dict_floats(
-        {
-            'q1': 5.9604644775390625e-05, 
-            'q2': 0.00011920928955078125
-        }, 
-        output,
-        tolerance=0.02):
+    if 'q1' not in output:
+        return "ERROR: Could not find key `q1` in the output"
+    
+    cost = output['q1']
+    if not nbutils.compare_float(5.9604644775390625e-05, cost, tolerance=0.02):
+        return "Wrong answer"
+
+
+@test(points=5)
+def q3_cost_q2():
+    if FILE_NOT_FOUND: return "ERROR: File p8.ipynb not found"
+    if not 3 in ANSWERS:
+        return "ERROR: Answer to question 3 not found"
+    outputs = ANSWERS[3]
+
+    output = nbutils.parse_dict_float_output(outputs)
+    if 'q2' not in output:
+        return "ERROR: Could not find key `q2` in the output"
+    
+    cost = output['q2']
+    if not nbutils.compare_float(0.00011920928955078125, cost, tolerance=0.02):
         return "Wrong answer"
 
 
