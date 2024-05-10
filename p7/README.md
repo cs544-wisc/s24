@@ -25,6 +25,9 @@ Learning objectives:
 
 Before starting, please review the [general project directions](../projects.md).
 
+## Clarifications
+* Generally, autograde waits for 60 seconds before it starts to check all the partition files generated. Don't make your producer/consumer run too slowly.
+
 ## Container setup
 
 Start by creating a `files` directory in your repository. 
